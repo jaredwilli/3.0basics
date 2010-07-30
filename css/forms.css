@@ -1,0 +1,26 @@
+/* Forms */
+textarea, input { padding: 0.1em 0.4em 0.25em; }
+select { padding: .1em 0 0 .2em; }
+option { padding: 0 .4em; }
+.required { font-size:15px; font-weight:bold; color:#ff0000; }
+
+input[type="submit"], 
+input.submit, 
+input[type="submit"]:visited, 
+input.submit:visited {
+	background: #efefef; 
+	border:1px solid #ccc;
+	color: #666;
+	text-shadow:0 1px 0 rgba(255,255,255, .7);
+	display: inline-block; 
+	padding: 5px; 
+	text-decoration: none;
+	position: relative;
+	cursor: pointer;
+	border-radius: 5px; -moz-border-radius: 5px; 
+	-webkit-border-radius: 5px;
+}
+input[type="submit"]:hover, 
+input.submit:hover { background-color: #666; color: #fff; }
+input[type="submit"]:active,
+input.submit:active {	top: 1px; outline:none; }

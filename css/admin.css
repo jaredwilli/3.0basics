@@ -1,0 +1,19 @@
+/* Admin Styles */
+
+#wpwrap{ background:#f0f7f5; }
+#header-logo{ background-image:url('../images/admin-logo.png')!important; }
+#wphead{ background:#56a6a1 url('../images/admin-bg.png') repeat-x!important; border-bottom:0px solid #abc2cc; height:52px; } 
+h1#site-heading a{ color:#deefeb; }
+#user_info { color:#deefeb; }
+
+/* CUSTOM FIELD TEMPLATE CSS CODE */
+#wpbody #cft { width:650px; margin: 0 auto; }
+#wpbody #cft fieldset { background: #FAFAFA; border: 1px solid #AAA; margin:0 10px 20px 0 !important; width:300px; display: inline; vertical-align: top; }
+#wpbody #cft fieldset legend { font-size: 13px; background: #FDFDFD; padding: 6px 12px; -webkit-box-shadow: 2px 2px 5px  #5e5e5e; -moz-box-shadow: 2px 2px 5px #5e5e5e; box-shadow: 2px 2px 5px #5e5e5e; }
+#wpbody #cft fieldset textarea { height:82px; width:100%; }
+#wpbody #cft fieldset legend span a { font-weight: bold; color: #FF0043; text-decoration: none; font-size: 14px; display: block; padding: 8px 0; }
+#wpbody #cft fieldset input { max-width:280px; }
+#wpbody #cft dt { display: none; }
+#wpbody #cft dd { margin-left: 0; }
+#wpbody #cft input { margin-bottom: 10px; }
+#wpbody #cft label { margin-right: 10px; }
