@@ -4,43 +4,40 @@ Theme URL: http://new2wp.com
 Description: A WordPress 3.0 supported theme framework by New2WP.com. Includes ready to use features from 3.0.
 Author: Jared Williams
 Author URI: http://new2wp.com
-Version: 1.0
+Version: 1.2
 */
 
-/* CSS Reset */
+/** IMPORTS **/
 @import 'css/reset.css';
-/* Dropdown navigation */
 @import 'css/dropdown-nav.css';
 
-/* Basic Styles */
-body { background: url(images/header.png) top repeat-x; color:#555; width: 100%; margin: 0 auto; height: auto; font:12px/1.6em Verdana, Arial, sans-serif; }
-
-/* General Layout */
+/*** BASIC STYLING **/
+body { color:#555; width:100%; margin:0 auto; font:12px/1.6em Verdana, Helvetica, sans-serif; }
 #wrapper { width: 960px; margin: 0 auto; }
 .inner { margin:0px; }
 
-/* Links & Other Basic Style */
+/* Links & Other */
 a, a:visited { color:#798789; text-decoration:none; }
 a:hover { color:#5b6c6e; }
 a img, img { border:0px; }
+p { color:#333; font-family: helvetica; font-size: 13px; }
+*.more-link { display: block; float: right; margin:0 0 12px 21px;  } /*.more-link */
+*.skip-link { display: none; } /*.skip-link */
 
+/* Misc Tags */
 hr, p, ul, ol, dl, pre, address, table, form { margin:.8em 0; }
 blockquote { color:#666; border-left:5px solid #cdcdcd; font:14px/1.6em Helvetica, Verdana; padding:0.6em 0 0.6em 1em; margin:.8em 0 .8em 2em; }
 blockquote p { margin:12px; }
 cite { font-style:normal; font-weight:bold; display:block; margin-top:-1.2em; }
-
-p { color:#333; font-family: helvetica; font-size: 13px; }
 abbr { border-bottom:1px dotted #e5801c; }
 acronym { border-bottom:1px double #b6d7d0; }
 pre { background:#f7fbff; color: #777; padding:1em; border:1px solid #b3c0c7; }
 code { display: block; margin: 0; padding: 10px 14px; color: #777; font: 14px/ 18px 'Courier New', 'Monospace'; }
 
-/* Alignments & WP Links */
-*.alignleft { display: block; text-align: left; } /*.alignleft */
-*.alignright { display: block; text-align: right; } /*.alignright */
+/* Alignments */
+*.alignleft { display: block; float: left; margin:0 21px 12px 0; } /*.alignleft */
+*.alignright { display: block; float: right; margin:0 0 12px 21px; } /*.alignright */
 *.aligncenter { display: block; text-align: center; } /*.aligncenter */
-*.more-link { display: block; text-align: right; } /*.more-link */
-*.skip-link { display:none; } /*.skip-link */
 
 /* Floats & Clears */
 *.fr { float: right; display: inline-block; } /* .floatright */
@@ -52,7 +49,6 @@ code { display: block; margin: 0; padding: 10px 14px; color: #777; font: 14px/ 1
 *.hide { display: none; } /* .hidden */
 *.nb { border: 0 !important; } /* .noborder */
 *.notext { font-size: 0; line-height: 0; text-indent: -4000px; } /* .no text */
-
 
 /* Headings */
 h1,h2,h3,h4,h5,h6 { text-shadow:0 1px 0 rgba(255, 248, 248, 0.9); font-weight:normal; line-height: 1.3em; }
@@ -66,53 +62,21 @@ h3 { font-size: 1.6em; color: #999; }
 h4 { font-size: 1.4em; color: #999; }
 h5,h6 { font-size: 1.2em; color: #999; }
 
-/* Header & Main Structure */
+
+/*** * MAIN SITE STRUCTURE * ***/
+
+/* Header */
 .top { margin:0 auto; width:100%; height:110px; }
 .right img { float: right; width:468px; height:60px; position:relative; top:70px; }
-
 #header, #content, #footer { position: relative; clear: both; margin-bottom: 20px; }
 #header {}
-#branding { padding:0; height:129px; }
+#branding { padding:0; height:130px; }
 
 /* Logo & Tagline */
 h1.logo { position:absolute; display:block; left:0px; top:60px; }
 h1.logo a { color:#999; text-shadow:0 1px 0 rgba(255, 248, 248, 0.9); font-size:2em; text-decoration:none; }
 h1.logo a:hover { color:#5b6c6e; text-shadow:0px 1px 0px rgba(255, 248, 248, 0.9); }
 .tagline { border:medium none; color:#ccc; text-shadow:0 1px 0 rgba(156, 157, 163, 0.7); font-size:1.3em; position:absolute; left:25px; top:90px; }
-
-/* Nav Menus */
-#topnav { width: 100%; margin: 0 auto; }
-#topnav ul { display: inline; }
-#topnav ul, #topnav li { margin: 0; padding: 0; list-style: none; display: inline; }
-#topnav li a { background:#EFEFEF; border:1px solid #cdcdcd; color:#999999; display:block; float:left; font-family:Helvetica,Verdana; font-size:14px; margin:5px 6px 0 0; padding:2px 5px; text-shadow:0 1px 0 rgba(255, 255, 255, 0.9); border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; }
-#topnav li a.currentpage, 
-#topnav li a.currentpage:hover { color: #999; background:#cdcdcd; }
-#topnav li a:hover { color: #999; }
-
-/* Header Nav styles in dropdown-nav.css */
-
-/* WP-Pagenavi */
-.wp-pagenavi a, .wp-pagenavi span { background:#ccc; color:#333; border: 1px solid #999!important;	text-decoration:; font-weight: bold; }
-.wp-pagenavi span.current { font-weight:bold; }
-.wp-pagenavi a:hover, .wp-pagenavi span.current { background:#333; color:#cdcdcd; border: 1px solid #ccc !important; text-decoration:underline !important; }
-
-/* Post Navigation */
-#post-navigation { width:100%; padding:12px 0; clear:both; border-top:1px solid #eee; }
-#post-navigation ul { margin:0; padding:0; list-style:none; }
-#post-navigation ul li { width:50%; margin:0; padding:3px 0 0 0; }
-#post-navigation ul li.newer { text-align:right; float:right; }
-#post-navigation ul li.older { text-align:left; float:left; }
-#post-navigation ul li a { text-decoration:none; font-size:16px; font-weight:bold; }
-
-/* Comment Navigation */
-.clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
-ul.navigation { list-style:none; margin:0; }
-ul.navigation li { margin:0; }
-
-/* Footer Navigation */
-#site-info .menu ul { display: inline-block; }
-#site-info .menu li { float:left; margin-right: 10px; }
-
 
 /* Main Content */
 #content { margin:12px 0; position:relative; top:0; z-index:1; }
@@ -130,8 +94,14 @@ ul.navigation li { margin:0; }
 #sidebar li form { margin:0; }
 #sidebar h2 { background:#efefef; color:#666; margin:0; font-size:20px; line-height:1.3em; padding:8px 12px 6px; }
 
+/* Footer */
+#footer { color:#999; font-size:11px; margin-bottom:30px; position: relative; top:50px; padding:12px 0; }
+#site-info { color: #666; font-size:12px; margin:5px 0px; padding:0 0 12px 0; text-align:center; font-family:Helvetica; }
+#copyright { margin:0; float:right; }
+#copyright a { color:#333; }
+
 /* Post Meta */
-.postinfo { text-transform:uppercase; font-family: Helvetica, Verdana; font-size:11px; margin:15px 0; padding:0; color:#999; list-style:none; }
+.postinfo { text-transform:uppercase; font-family: Helvetica, Verdana; font-size:11px; margin:0; padding:0; color:#999; list-style:none; }
 .postinfo li { float:left; display:inline; padding:4px 15px 0 20px; margin:0 20px 0 0; }
 .postinfo li.authordata { background:url(images/icons/user-icon.png) left center no-repeat; padding:0 0 0 27px; }
 .postinfo li.postdata { background:url(images/icons/tags-icon.png) left center no-repeat; }
@@ -166,7 +136,7 @@ h2.breadcrumb { text-transform:capitalize; font-size:1.4em; }
 /* 404 */
 .error-404 h4 { font-size:13px; margin:1.2em 0 0.8em 0; }
 
-/* Sites Pages */
+/* Sites */
 .sites { border-bottom:5px solid #EFEFEF; margin:0 0 20px; padding:0 0 20px; }
 .site-thumbnail { float:left; margin:0 20px 0 0; }
 .site-thumbnail a img, .site-bigthumb a img { border:1px solid #cdcdcd;
@@ -176,14 +146,52 @@ h2.breadcrumb { text-transform:capitalize; font-size:1.4em; }
 	-webkit-box-shadow:0 0 2px rgba(100,100,100,.6);
 }
 
-/* Footer */
-#footer { color:#999; font-size:11px; margin-bottom:30px; position: relative; top:50px; padding:12px 0; }
-#site-info { color: #666; font-size:12px; margin:5px 0px; padding:0 0 12px 0; text-align:center; font-family:Helvetica; }
-#copyright { margin:0; float:right; }
-#copyright a { color:#333; }
+
+/*** NAVIGATION & MENUS ***/
+
+/* Nav Menus */
+#topnav { width: 100%; margin: 0 auto; }
+#topnav ul { display: inline; }
+#topnav ul, #topnav li { margin: 0; padding: 0; list-style: none; display: inline; }
+#topnav li a {
+	 background:#EFEFEF; border:1px solid #cdcdcd; color:#999999; 
+	 display:block; float:left; margin:5px 6px 0 0; padding:2px 5px; 
+	 font-family:Helvetica,Verdana; font-size:14px; text-shadow:0 1px 0 rgba(255,255,255,0.9); 
+	 border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px;
+}
+#topnav li a.currentpage, #topnav li a.currentpage:hover { color: #999; background:#cdcdcd; }
+#topnav li a:hover { background:#eee; color: #999; }
+
+/* Header Nav styles in dropdown-nav.css */
 
 
-/* All Form Styles */
+
+/* Footer Navigation */
+#site-info .menu ul { display: inline-block; }
+#site-info .menu li { float:left; margin-right: 10px; }
+
+/* WP-Pagenavi */
+.wp-pagenavi a, .wp-pagenavi span { background:#ccc; color:#333; border: 1px solid #999!important;	text-decoration:; font-weight: bold; }
+.wp-pagenavi span.current { font-weight:bold; }
+.wp-pagenavi a:hover, .wp-pagenavi span.current { background:#333; color:#cdcdcd; border: 1px solid #ccc !important; text-decoration:underline !important; }
+
+/* Post Navigation */
+#post-navigation { width:100%; padding:12px 0; clear:both; border-top:1px solid #eee; }
+#post-navigation ul { margin:0; padding:0; list-style:none; }
+#post-navigation ul li { width:50%; margin:0; padding:3px 0 0 0; }
+#post-navigation ul li.newer { text-align:right; float:right; }
+#post-navigation ul li.older { text-align:left; float:left; }
+#post-navigation ul li a { text-decoration:none; font-size:16px; font-weight:bold; }
+
+/* Comment Navigation */
+.clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+ul.navigation { list-style:none; margin:0; }
+ul.navigation li { margin:0; }
+
+
+/*** FORMS STYLES ***/
+
+/* All Forms */
 textarea, input { padding: 0.1em 0.4em 0.25em; }
 select { padding: .1em 0 0 .2em; }
 option { padding: 0 .4em; }
@@ -247,10 +255,12 @@ form#commentform textarea { padding:4px; width:530px; }
 p.comment-rules { background: #fff6bf; text-align: left; padding: 5px 20px 5px 20px; border-top: 2px solid #ffd324; border-bottom: 2px solid #ffd324; }
 p.comment-disclaimer { font-size:10px; color:#999; }
 
+
+/*** MISCELANEOUS ***/
+
 /* Social Icons */
 ul#social { float:right; position:relative; right:380px; top:-12px; }
 ul#signup { float:right; position:relative; right:230px; top:-15px; }
-
 #social li { display:inline-block; margin:2px 3px; } /* Twitter and Facebook icons */
 #email { background:url("images/icons/email-icon.png") no-repeat scroll left center transparent; color:#666666; padding:0 0 0 20px; right:10px; top:205px; }
 #email :hover { text-decoration:underline; }
@@ -262,7 +272,7 @@ ul#signup { float:right; position:relative; right:230px; top:-15px; }
 .pd-rating { float:right; }
 
 
-/** Widget Styles **/
+/*** SIDEBAR WIDGETS ***/
 
 /* Tagcloud */
 .widget_tag_cloud div { padding:10px; }
