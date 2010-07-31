@@ -14,14 +14,12 @@ add_action( 'get_header', 'redirect_to_first_child', 2 );
 add_filter( 'admin_body_class', 'base_admin_body_class' );
 add_filter( 'admin_footer_text', 'custom_admin_footer' );
 
-add_action( 'wp_head', 'js_scripts' );
+add_action( 'wp_footer', 'js_scripts' );
 add_filter( 'wp_list_pages','base_better_lists' );
 add_filter( 'wp_list_categories','base_better_lists' );
 add_filter( 'get_the_excerpt', 'trim_excerpt' );			// remove [...] from excerpts
 add_filter( 'the_generator', 'complete_version_removal' ); 	// remove WP version generated in head
 
-// Add 3.0 Theme Supports
-add_theme_support( 'menus' );					// support for wp_nav_menu()
 // Function for registering wp_nav_menu() in 3 locations
 add_action( 'init', 'register_navmenus' );
 function register_navmenus() {
@@ -31,7 +29,60 @@ function register_navmenus() {
 		'Footer'	=> __( 'Footer Navigation' ),
 		)
 	);
+	
+	// Check if Top menu exists and make it if not
+	if ( !is_nav_menu( 'Top' )) {
+		$menu_id = wp_create_nav_menu( 'Top' );
+		$menu = array( 'menu-item-type' => 'custom', 'menu-item-url' => get_home_url('/'),'menu-item-title' => 'Home' );
+		wp_update_nav_menu_item( $menu_id, 1, $menu );
+	}
+	// Check if Header menu exists and make it if not
+	if ( !is_nav_menu( 'Header' )) {
+		$menu_id = wp_create_nav_menu( 'Header' );
+		$menu = array( 'menu-item-type' => 'custom', 'menu-item-url' => get_home_url('/'), 'menu-item-title' => 'Home' );
+		wp_update_nav_menu_item( $menu_id, 1, $menu );
+	}
+	// Check if Footer menu exists and make it if not
+	if ( !is_nav_menu( 'Footer' )) {
+		$menu_id = wp_create_nav_menu( 'Footer' );
+		$menu = array( 'menu-item-type' => 'custom', 'menu-item-url' => get_home_url('/'), 'menu-item-title' => 'Home' );
+		wp_update_nav_menu_item( $menu_id, 1, $menu );
+	}
+	
+	// Get any menu locations that dont have a menu assigned to it and give it on
+	/*
+	$loc = array('Top', 'Header', 'Footer');
+	if ( has_nav_menu( $location )) {
+		$locations = get_nav_menu_locations();
+		return (!empty( $locations[ $location ] ));
+	}
+	*/
+	
 }
+// Create Menu: $menu_id = wp_create_nav_menu( array ( 'Footer' ));
+// Create Menu Items:
+/*
+$menu = array(
+	'menu-item-object-id' => 0,
+	'menu-item-object' => '',
+	'menu-item-parent-id' => 0,
+	'menu-item-position' => 0,
+	'menu-item-type' => 'custom',
+	'menu-item-title' => '',
+	'menu-item-url' => '',
+	'menu-item-description' => '',
+	'menu-item-attr-title' => '',
+	'menu-item-target' => '',
+	'menu-item-classes' => '',
+	'menu-item-xfn' => '',
+	'menu-item-status' => '',
+);
+$menu_item_db_id = wp_update_nav_menu_item( $menu_id, 0, $menu);
+// Update Menu Items:
+wp_update_nav_menu_item( $menu_id, $menu_item_db_id, $menu);
+// Delete nav menu
+wp_delete_nav_menu();
+
 add_theme_support( 'post-thumbnails' );			// support for post thumbnail feature
 add_theme_support( 'automatic-feed-links' );	// support for adding RSS feed links
 
@@ -94,7 +145,15 @@ function custom_admin_footer() {
 	jQuery UI Tabs 	-	jquery-ui-tabs
 	jQuery Thickbox	-	thickbox
 	jQuery Tools 	-	jqtools
-**/	 
+	
+  wp_enqueue_script( 
+	$handle - Name of the script, 
+	$src 	- URL to the script, 
+	$deps	- Array of handles of any script that this script depends on;, 
+	$ver	- String specifying the script version number, if it has one., 
+	$in_footer - If this parameter is true the script is placed at the bottom of the <body>
+  );
+**/
 function js_scripts() {
 	if( !is_admin() ){
 		wp_deregister_script( 'jquery' );
