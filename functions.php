@@ -18,7 +18,10 @@ add_action( 'wp_footer', 'js_scripts' );
 add_filter( 'wp_list_pages','base_better_lists' );
 add_filter( 'wp_list_categories','base_better_lists' );
 add_filter( 'get_the_excerpt', 'trim_excerpt' );			// remove [...] from excerpts
-add_filter( 'the_generator', 'complete_version_removal' ); 	// remove WP version generated in head
+add_filter( 'the_generator', 'complete_version_removal' ); 	// remove WP version generated in 
+
+add_theme_support( 'post-thumbnails' );		 // support for post thumbnail feature
+add_theme_support( 'automatic-feed-links' ); // support for adding RSS feed links
 
 // Function for registering wp_nav_menu() in 3 locations
 add_action( 'init', 'register_navmenus' );
@@ -57,34 +60,10 @@ function register_navmenus() {
 		return (!empty( $locations[ $location ] ));
 	}
 	*/
-	
 }
-// Create Menu: $menu_id = wp_create_nav_menu( array ( 'Footer' ));
-// Create Menu Items:
-/*
-$menu = array(
-	'menu-item-object-id' => 0,
-	'menu-item-object' => '',
-	'menu-item-parent-id' => 0,
-	'menu-item-position' => 0,
-	'menu-item-type' => 'custom',
-	'menu-item-title' => '',
-	'menu-item-url' => '',
-	'menu-item-description' => '',
-	'menu-item-attr-title' => '',
-	'menu-item-target' => '',
-	'menu-item-classes' => '',
-	'menu-item-xfn' => '',
-	'menu-item-status' => '',
-);
-$menu_item_db_id = wp_update_nav_menu_item( $menu_id, 0, $menu);
-// Update Menu Items:
-wp_update_nav_menu_item( $menu_id, $menu_item_db_id, $menu);
-// Delete nav menu
-wp_delete_nav_menu();
-
-add_theme_support( 'post-thumbnails' );			// support for post thumbnail feature
-add_theme_support( 'automatic-feed-links' );	// support for adding RSS feed links
+/* Delete nav menu
+wp_delete_nav_menu( $menu );
+*/
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

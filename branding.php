@@ -3,7 +3,7 @@
 <div id="header">
 	<div id="branding" class="inner clearfix">
 		<div class="top">										
-			<div id="navbox">
+			<div id="topnav">
 				<?php
 				// Using wp_nav_menu() to display menu
 				wp_nav_menu( array(
@@ -28,7 +28,7 @@
 				</div>
 				<?php // } // end if(!is_user_logged_in()). Uncomment to close IF. ?>
 			
-			</div><!--end navbox-->
+			</div><!--end topnav-->
 			<div class="clearit"></div>
 			
 			<div class="logobox">
