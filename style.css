@@ -75,7 +75,7 @@ acronym { border-bottom:1px double #b6d7d0; }
 
 .loginform { position:absolute; top:5px; right:0px; width:455px; color:#666; }
 .login-username, 
-.login-password { padding:0; margin:0; }
+.login-password { color:#999; padding:0; margin:0; }
 .login-username { float:left; display:inline; width:225px; }
 .login-remember { color:#999; font-size:10px; position:absolute; top:30px; left:85px; }
 .login-submit { position:absolute; right:18px; top:25px; }
@@ -91,15 +91,15 @@ textarea, input { padding: 0.1em 0.4em 0.25em; }
 select { padding: .1em 0 0 .2em; }
 option { padding: 0 .4em; }
 .required { font-size:15px; font-weight:bold; color:#ff0000; }
+form textarea :hover, input :hover { background:#ccc; }
 
 input[type="submit"], input.submit, 
 input[type="submit"]:visited, 
-input.submit:visited { background: #efefef; border:1px solid #ccc; color: #666; text-shadow:0 1px 0 rgba(255,255,255, .7); display: inline-block; padding: 5px; text-decoration: none; position: relative; cursor: pointer; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
+input.submit:visited { background: #efefef; border:1px solid #ccc; color: #999; text-shadow:0 1px 0 rgba(255,255,255, .7); display: inline-block; padding: 5px; text-decoration: none; position: relative; cursor: pointer; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
 input[type="submit"]:hover, 
 input.submit:hover { background-color: #666; color: #fff; }
 input[type="submit"]:active,
-input.submit:active {	top: 1px; outline:none; }
-
+input.submit:active { top: 1px; outline:none; }
 
 #header, 
 #content, 
@@ -114,10 +114,10 @@ input.submit:active {	top: 1px; outline:none; }
 #searchsubmit { border:0px solid #ccc; background: url(images/icons/search.png) left top no-repeat; width:31px; height:31px; padding:7px 6px 6px 6px; margin:0; float:left; }
 #searchbox { position:absolute; top:0; right:0px; margin:0; padding:0; width: 290px; }
 
-ul#social { float:right; position:relative; right:380px; top:-18px; }
+ul#social { float:right; position:relative; right:380px; top:-12px; }
 #social li { display:inline-block; margin:2px 3px; }
 
-ul#signup { float:right; position:relative; right:225px; top:-18px; }
+ul#signup { float:right; position:relative; right:230px; top:-15px; }
 #email { background:url("images/icons/email-icon.png") no-repeat scroll left center transparent; color:#666666; padding:0 0 0 20px; right:10px; top:205px; }
 #email :hover { text-decoration:underline; }
 #rss { background:url("images/icons/rss-icon.png") no-repeat scroll left center transparent; color:#666666; padding:0 0 0 18px; right:75px; top:190px; }
@@ -126,6 +126,8 @@ ul#signup { float:right; position:relative; right:225px; top:-18px; }
 #content { margin:12px 0; position:relative; top:0; z-index:1; }
 #content-main {float: left; width: 640px;}
 #content-sub {float: right; width: 300px}
+
+.sites { border-bottom:5px solid #EFEFEF; margin:0 0 20px; padding:0 0 20px; }
 .site-thumbnail { float:left; margin:0 20px 0 0; }
 
 /* Sidebar */
@@ -166,6 +168,7 @@ ul#signup { float:right; position:relative; right:225px; top:-18px; }
 .post { padding:0 0 12px 0; border-bottom:1px solid #ccc; margin-bottom:1.6em; }
 .post-title { color: #666; }
 .entry { padding:1px; margin-bottom:5px; }
+.meta { text-transform:uppercase; font-size:10px; }
 
 h1 .post-title { font-size: 2.2em; color: #666; }
 h1 .post-title a { color: #666; }
@@ -189,7 +192,7 @@ h2.breadcrumb { text-transform:capitalize; font-size:1.4em; }
 
 *.alignleft { float:left; margin-right: 18px; }
 *.alignright { float:right; margin-left: 18px; }
-*.aligncenter { }
+*.aligncenter { text-align:center; }
 *.more-link { display:block; margin:0 0 1.6em 0; }
 
 /* Comments */
@@ -242,5 +245,21 @@ p.comment-disclaimer { font-size:10px; color:#999; }
 /* Footer */
 #footer { color:#999; font-size:11px; margin-bottom:30px; position: relative; top:50px; padding:12px 0; }
 #site-info { color: #666; font-size:12px; margin:5px 0px; padding:0 0 12px 0; text-align:center; font-family:Helvetica; }
-#copyright { margin:0; }
+#site-info .menu ul { display: inline-block; }
+#site-info .menu li { float:left; margin-right: 10px; }
+
+#copyright { margin:0; float:right; }
 #copyright a { color:#333; }
+
+/** Widget Styles **/
+
+/* Tagcloud */
+.widget_tag_cloud div { padding:10px; }
+/* Text Widget */
+.textwidget { padding:10px; }
+/* Calendar Styling */
+#wp-calendar { width:100%; padding:5px; vertical-align:middle; }
+#wp-calendar caption { background:; }
+#wp-calendar thead, #wp-calendar tfoot { background:#efefef; }
+#wp-calendar tr, #wp-calendar td { padding:5px; text-align:center; border:#f7f7f7; }
+#wp-calendar #today { background: #efefef; }

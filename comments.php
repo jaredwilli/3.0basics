@@ -55,14 +55,12 @@
 <?php else : ?>
 
 <div id="commentsform">
-<form action="<?php echo get_option('siteurl'); ?>/wp-comments-post.php" method="post" id="commentform">
-<?php comment_id_fields(); ?>
+<form action="<?php site_url(); ?>/wp-comments-post.php" method="post" id="commentform">
+	<?php comment_id_fields(); ?>
 
-<?php if ( $user_ID ) : ?>
-
-<p>Logged in as <a href="<?php echo get_option('siteurl'); ?>/wp-admin/profile.php"><?php echo $user_identity; ?></a>. <a href="<?php echo wp_logout_url(get_permalink()); ?>" title="Log out of this account">Log out &raquo;</a></p>
-
-<?php else : ?>
+	<?php if ( $user_ID ) : ?>
+	<p>Logged in as <a href="<?php site_url(); ?>/wp-admin/profile.php"><?php echo $user_identity; ?></a>. <a href="<?php echo wp_logout_url(get_permalink()); ?>" title="Log out of this account">Log out &raquo;</a></p>
+	<?php else : ?>
 
     <p>
       <label for="author">Name <?php if ($req) echo '<small class="required">*</small>'; ?></label>
@@ -103,5 +101,4 @@
 </div><!-- end #commentsform -->
 
 <?php endif; // If registration required and not logged in ?>
-
 <?php endif; // if you delete this the sky will fall on your head ?>

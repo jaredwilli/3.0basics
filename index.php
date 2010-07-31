@@ -38,5 +38,4 @@
 	</div><!-- end #content-main -->
 	<div id="content-sub"><?php get_sidebar(); ?></div> <!-- end #content-sub -->
 </div><!-- end #content -->
-
 <?php get_footer(); ?>

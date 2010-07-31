@@ -1,14 +1,10 @@
 <ul id="sidebar">
 <?php function showDefault() { // Default Sidebar Content ?>
-
 <!--
-	<li id="searchbox">
-		<?php get_search_form(); ?>
-	</li>
-
-
+	<li id="searchbox"><?php get_search_form(); ?></li>
 	<li id="nav-level-3">
--->		<?php /*
+-->		
+		<?php /*
 		global $wp_query;
 		$post = $wp_query->post;
 		$ancestors = get_post_ancestors($post);

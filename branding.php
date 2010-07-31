@@ -14,7 +14,9 @@
 					)
 				);
 				?>
-		
+				
+				<?php // Uncomment this to not show login form when logged in
+				// if( !is_user_logged_in() ) { ?>
 				<div class="loginform">
 					<?php wp_login_form(); ?>
 					<p class="forgotpass">
@@ -24,6 +26,7 @@
 						<a href="#">Register</a>
 					</p>
 				</div>
+				<?php // } // end if(!is_user_logged_in()). Uncomment to close IF. ?>
 			
 			</div><!--end navbox-->
 			<div class="clearit"></div>

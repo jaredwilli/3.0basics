@@ -14,7 +14,7 @@
 			$s = new TypeSites();
 		?>
 
-			<div id="site-<?php the_ID(); ?>" class="user_id_<?php the_author_ID(); ?>">
+			<div id="site-<?php the_ID(); ?>" class="sites clearfix user_id_<?php the_author_ID(); ?>">
 				<div class="site-thumbnail">
 					<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php $s->mshot(200); ?></a>
 				</div>

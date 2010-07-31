@@ -1,19 +1,15 @@
 <?php get_header(); ?>
-
 </head>
 <body class="<?php base_body_class(); ?>">
 
 <?php include(TEMPLATEPATH . '/branding.php'); ?>
-
 <div id="content" class="inner clearfix">
-		
-<div id="content-main">
-
+	<div id="content-main">
 
 <?php
 // Create list of taxonomy terms and list the posts under each term
-$post_type = get_post_type( );;
-$tax = 'consumer';
+$post_type = get_post_type();;
+$tax = '';
 $tax_terms = get_terms( $tax );
 if ($tax_terms) {
 	foreach ($tax_terms  as $tax_term) {
@@ -38,7 +34,6 @@ if ($tax_terms) {
 					<a href="<?php the_permalink(); ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a>
 				</li>
 
-
 			<?php endwhile; // end of loop ?>
 			</ul>
 
@@ -61,12 +56,7 @@ if ($tax_terms) {
 }
 ?>
 
-</div><!-- end #content-main -->
-
-<div id="content-sub">
-  <?php get_sidebar(); ?>
-</div> <!-- end #content-sub -->
-
+	</div><!-- end #content-main -->
+	<div id="content-sub"><?php get_sidebar(); ?></div> <!-- end #content-sub -->
 </div><!-- end #content -->
-
 <?php get_footer(); ?>

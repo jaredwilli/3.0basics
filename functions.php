@@ -88,7 +88,7 @@ function custom_admin_footer() {
 } 
 
 /**
- * Scripts
+ * Load Scripts
 	jQuery 1.4.2	-	jquery
 	jQuery UI Core	-	jquery-ui-core
 	jQuery UI Tabs 	-	jquery-ui-tabs
@@ -96,17 +96,21 @@ function custom_admin_footer() {
 	jQuery Tools 	-	jqtools
 **/	 
 function load_scripts() {
+	if( !is_admin() ){
 		wp_deregister_script( 'jquery' );
 		wp_register_script	( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', false, '1.4.2', true );
 		wp_register_script	( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js', false, '1.8.2', true );
-		wp_register_script	( 'jqtools', 'http://cdn.jquerytools.org/1.1.2/tiny/jquery.tools.min.js' );
+		wp_register_script	( 'jqtools', 
+'http://cdn.jquerytools.org/1.2.3/jquery.tools.min.js' );
 		wp_enqueue_script	( 'jquery' );
 		wp_enqueue_script	( 'jqueryui' );
 		wp_enqueue_script	( 'thickbox' );
 		
 		// load a JS file from my theme: js/theme.js
-		wp_enqueue_script	( 'my_script', get_bloginfo('template_url').'/js/actions.js', 
-				  	array	( 'jquery', 'jqueryui', 'thickbox' ), '1.0', true);
+		// wp_enqueue_script	( 'load_script', get_bloginfo('template_url').'/js/global.js', 
+		//		  	array	( 'jquery', 'jqueryui', 'thickbox' ), '1.0', true);
+	}
+	return;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -560,9 +564,12 @@ function base_comment($comment, $args, $depth) {
 	 <li <?php comment_class(); ?> id="li-comment-<?php comment_ID() ?>">
 		<div id="comment-<?php comment_ID(); ?>">
 			<div class="author-data">
-				<?php echo get_avatar($comment,$size='40',$default='<path_to_url>' ); ?>
-				<?php printf(__('<h3 class="author">%s</h3>'), get_comment_author_link()) ?>
-				<div class="comment-meta commentmetadata"><?php printf(__('%1$s at %2$s'), get_comment_date(),	get_comment_time()) ?> <?php edit_comment_link(__('(Edit)'),'	','') ?></div>
+				<?php echo get_avatar( $comment, $size='40', $default='<path_to_url>' ); ?>
+				<?php printf( __( '<h3 class="author">%s</h3>' ), get_comment_author_link() );?>
+				<div class="comment-meta commentmetadata">
+					<?php printf( __('%1$s at %2$s'), get_comment_date(), get_comment_time() ); ?> 
+					<?php edit_comment_link( __('(Edit)'),' ',''); ?>
+				</div>
 			</div>
 <?php if ($comment->comment_approved == '0') : ?>
 			<em><?php _e('Your comment is awaiting moderation.') ?></em>
