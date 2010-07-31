@@ -14,7 +14,7 @@ add_action( 'get_header', 'redirect_to_first_child', 2 );
 add_filter( 'admin_body_class', 'base_admin_body_class' );
 add_filter( 'admin_footer_text', 'custom_admin_footer' );
 
-add_action( 'wp_footer', 'load_scripts' );
+add_action( 'wp_head', 'js_scripts' );
 add_filter( 'wp_list_pages','base_better_lists' );
 add_filter( 'wp_list_categories','base_better_lists' );
 add_filter( 'get_the_excerpt', 'trim_excerpt' );			// remove [...] from excerpts
@@ -95,7 +95,7 @@ function custom_admin_footer() {
 	jQuery Thickbox	-	thickbox
 	jQuery Tools 	-	jqtools
 **/	 
-function load_scripts() {
+function js_scripts() {
 	if( !is_admin() ){
 		wp_deregister_script( 'jquery' );
 		wp_register_script	( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', false, '1.4.2', true );
@@ -107,8 +107,8 @@ function load_scripts() {
 		wp_enqueue_script	( 'thickbox' );
 		
 		// load a JS file from my theme: js/theme.js
-		// wp_enqueue_script	( 'load_script', get_bloginfo('template_url').'/js/global.js', 
-		//		  	array	( 'jquery', 'jqueryui', 'thickbox' ), '1.0', true);
+		wp_enqueue_script	( 'load_script', get_bloginfo('template_url').'/js/global.js', 
+				  	array	( 'jquery', 'jqueryui', 'thickbox' ), '1.0', true);
 	}
 	return;
 }
