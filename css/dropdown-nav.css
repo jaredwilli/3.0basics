@@ -4,7 +4,7 @@
 
 /***************** SUB MENU - Main Tabs **********************/
 /*************************************************************/
-#navigation ul.menu { position:absolute; list-style:none; margin-bottom:0px; width:400px; display:inline-block; }
+#navigation ul.menu { position:absolute; list-style:none; margin-bottom:0px; width:480px; display:inline-block; }
 #navigation ul.menu li {
 	background:#efefef;
 	background-image: -moz-linear-gradient(top, #efefef, #f7f7f7);
