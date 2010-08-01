@@ -27,7 +27,7 @@ add_filter( 'wp_list_pages','base_better_lists' );
 add_filter( 'wp_list_categories','base_better_lists' );
 add_filter( 'get_the_excerpt', 'trim_excerpt' );			// remove [...] from excerpts
 add_filter( 'the_generator', 'complete_version_removal' ); 	// remove WP version generated in 
-add_filter( 'wp_foot', 'load_scripts' );
+add_filter( 'wp_footer', 'my_js' );
 
 add_theme_support( 'post-thumbnails', array( 'post', 'page', 'site' )); // 
 add_theme_support( 'automatic-feed-links' ); // support for adding RSS feed links
@@ -105,10 +105,8 @@ function base_better_lists($content) {
 
 	$pattern = '/<li class="/is';
 	$content = preg_replace($pattern, '<li class="first ', $content, 1);
-
 	$pattern = '/<li class="(?!.*<li class=")/is';
 	$content = preg_replace($pattern, '<li class="last ', $content, 1);
-
 	return $content;
 }
 
@@ -149,9 +147,10 @@ if (!is_admin()) {
 	wp_enqueue_script ( 'comment-reply','','','',true );
 }
 */
-function load_scripts() { ?>
+function my_js() { ?>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-	<script src="<?php get_bloginfo('template_directory').'/js/global.js'; ?>"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
+	<script src="<?php bloginfo('template_directory').'/js/global.js'; ?>"></script>
 <?php
 }
 
@@ -162,14 +161,6 @@ function load_scripts() { ?>
 	jQuery UI Tabs 	-	jquery-ui-tabs
 	jQuery Thickbox	-	thickbox
 	jQuery Tools 	-	jqtools
-	
-  wp_enqueue_script( 
-	$handle - Name of the script, 
-	$src 	- URL to the script, 
-	$deps	- Array of handles of any script that this script depends on;, 
-	$ver	- String specifying the script version number, if it has one., 
-	$in_footer - If this parameter is true the script is placed at the bottom of the <body>
-  );
  */
 function bb_scriptSettings () {
 	$scripts = array();
