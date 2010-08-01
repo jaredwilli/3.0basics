@@ -22,18 +22,16 @@
 	<?php endwhile; ?>
 	
 		<?php if( function_exists( 'wp_pagenavi' )) { wp_pagenavi(); } else { ?>
-			<div class="navigation clearfix">
-				<div class="alignleft"><?php next_posts_link('&laquo; Previous Entries'); ?></div>
-				<div class="alignright"><?php previous_posts_link('Next Entries &raquo;'); ?></div>
-			</div>
+		<div class="navigation clearfix">
+			<div class="alignleft"><?php next_posts_link('&laquo; Previous Entries'); ?></div>
+			<div class="alignright"><?php previous_posts_link('Next Entries &raquo;'); ?></div>
+		</div>
 		<?php } ?>
-				
-	<?php else : ?>
-	
-		<h2 class="title">Oops</h2>
-		<p>Looks like something is missing...</p>
-	
-	<?php endif; ?>
+
+	<?php else :
+		// Show 404 message
+		if (function_exists('bb_404')) { bb_404(); }
+	endif; ?>
 	
 	</div><!-- end #content-main -->
 	<div id="content-sub"><?php get_sidebar(); ?></div> <!-- end #content-sub -->

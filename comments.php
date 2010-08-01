@@ -31,7 +31,7 @@
 <?php else : // this is displayed if there are no comments so far ?>
 
   <?php if ('open' == $post->comment_status) : ?>
-  <p>Nothing yet.</p>
+  <!-- <p>No comments yet. <a href="#respond">Post one &raquo;</a>.</p> -->
   
   <?php else : // comments are closed ?>
   <p class="nocomments">Comments are closed.</p>

@@ -14,7 +14,7 @@ add_action( 'get_header', 'redirect_to_first_child', 2 );
 add_filter( 'admin_body_class', 'base_admin_body_class' );
 add_filter( 'admin_footer_text', 'custom_admin_footer' );
 
-add_action( 'wp_footer', 'js_scripts' );
+// add_action( 'wp_footer', 'js_scripts' );
 add_filter( 'wp_list_pages','base_better_lists' );
 add_filter( 'wp_list_categories','base_better_lists' );
 add_filter( 'get_the_excerpt', 'trim_excerpt' );			// remove [...] from excerpts
@@ -76,6 +76,9 @@ wp_delete_nav_menu( $menu );
 /* * * * * * * * * Functions and Custom Settings * * * * * * * * * * * * * */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+/**
+ *
+ */
 //Add 'first' and 'last' classes to ends of wp_list_pages and wp_list_categories
 function base_better_lists($content) {
 
@@ -88,6 +91,9 @@ function base_better_lists($content) {
 	return $content;
 }
 
+/**
+ *
+ */
 // Redirect parent pages to first child
 function redirect_to_first_child(){
 	global $post; 
@@ -108,17 +114,27 @@ function redirect_to_first_child(){
 	}
 }
 
+/**
+ *
+ */
 // Additional Admin Styles and custom Branding
 function admin_register_head() {
 	$url = get_bloginfo('template_directory') . '/css/admin.css';
 	echo '<link rel="stylesheet" type="text/css" href="' . $url . '" />';
 }
+
+/**
+ *
+ */
 function custom_admin_footer() {
 	echo '<a href="http://new2wp.com">Theme created by New2WP</a>';
 } 
 
+
 /**
- * Load Scripts
+ *
+ */
+/** Load Scripts
 	jQuery 1.4.2	-	jquery
 	jQuery UI Core	-	jquery-ui-core
 	jQuery UI Tabs 	-	jquery-ui-tabs
@@ -133,44 +149,124 @@ function custom_admin_footer() {
 	$in_footer - If this parameter is true the script is placed at the bottom of the <body>
   );
 **/
-function js_scripts() {
-	if( !is_admin() ){
+
+
+/**
+ *
+ * Script settings
+ */
+function bb_scriptSettings () {
+	$scripts = array();
+	if (!is_admin()) {
 		wp_deregister_script( 'jquery' );
-		wp_register_script	( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', false, '1.4.2', true );
-		wp_register_script	( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js', false, '1.8.2', true );
-		wp_register_script	( 'jqtools', 
-'http://cdn.jquerytools.org/1.2.3/jquery.tools.min.js' );
-		wp_enqueue_script	( 'jquery' );
-		wp_enqueue_script	( 'jqueryui' );
-		wp_enqueue_script	( 'thickbox' );
+		wp_deregister_script( 'jquery-ui-core' );
 		
-		// load a JS file from my theme: js/theme.js
-		wp_enqueue_script	( 'load_script', get_bloginfo('template_url').'/js/global.js', 
-				  	array	( 'jquery', 'jqueryui', 'thickbox' ), '1.0', true);
+		$scripts = array ( 
+			'jquery' => array(
+				'jquery', 
+				'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js',
+			),
+			'jquery-ui-core' => array(
+				'jquery-ui-core', 
+				'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js',
+			),
+			'jqtools' => array(
+				'jqtools', 
+				'http://cdn.jquerytools.org/1.2.3/jquery.tools.min.js',
+			),
+			'global' => array(
+				'global', 
+				TEMPLATEPATH . '/js/global.js',
+			),
+			'hoverIntent' => array (
+				'hoverIntent',
+				TEMPLATEPATH . '/js/hoverIntent.js',
+			),
+			'superfish' => array (
+				'superfish',
+				TEMPLATEPATH . '/js/superfish.js',
+			),
+		);
 	}
-	return;
+	return apply_filters ('bb_loadScripts', $scripts);	
+}
+
+/**
+ * Load scripts
+ */
+function bb_loadScripts () {
+	$scripts = (array) bb_scriptSettings();
+	if (count($scripts) > 0) {
+		foreach ($scripts as $script) {
+			wp_register_script($script[0], $script[1]);
+			wp_enqueue_script($script[0], $script[1]);
+		}
+	}	
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* * * * * * * * * Useful Functions and Features * * * * * * * * * * * * * */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-// remove [...] from excerpts
-function trim_excerpt($text) { return rtrim($text,'[...]'); }
-
-// remove version info from head and feeds
-function complete_version_removal() { return ''; }
+/**
+ *
+ * generic message for 404 pages
+ * Saves adding the same content to many pages
+ */
+function bb_404() { ?>
+	<div class="error message message_404">
+		<h2 class="title"><?php _e( 'O_o Great Googly Moogly!! Not Found!!!' ); ?></h2>
+		<p><?php _e( 'What did you lose this time?' ); ?></p>
+	</div>
+<?php 
+}
 
 /**
+ *
+ * do a 404 header and check file types
+ * if bad file type then die properly else continue and print 404 message
+ */
+function bb_404Response() {
+	header('HTTP/1.1 404 Not Found');
+	if (!empty($_SERVER['REQUEST_URI'])) {
+		$fileExtension = strtolower(pathinfo($_SERVER['REQUEST_URI'], PATHINFO_EXTENSION));
+	} else {
+		$fileExtension = '';
+	}
+	$badFileTypes = array( 
+		'css', 'txt', 'jpg', 'gif', 'rar', 'zip', 
+		'png', 'bmp', 'tar', 'doc', 'xml', 'js', 
+		);
+	$badFileTypes = apply_filters('bb_404BadFileTypes', $badFileTypes);
+	if (in_array($fileExtension, $badFileTypes)) {
+		bb_404();
+		die();
+	}
+}
+
+/**
+ *
+ * Remove [...] from excerpts
+ */
+function trim_excerpt($text) { return rtrim($text,'[...]'); }
+
+/**
+ * Remove version info from head and feeds 
+ */
+function complete_version_removal() { return ''; }
+
+
+/**
+ *
+ *
  * Add support for post thumbnails and add thumb 
  * image to coloumn to post manage page
  *
  * @param, since 2.9
 **/
-// Add support for post thumbnails, and show them in edit post list
 if ( !function_exists('fb_AddThumbColumn') && function_exists('add_theme_support') ) { 
 	// for post and page
-	add_theme_support('post-thumbnails', array( 'post', 'page' ) );
+	add_theme_support('post-thumbnails', array( 'post', 'page', 'site' ) );
  
 	function fb_AddThumbColumn($cols) { 
 		$cols['thumbnail'] = __('Thumbnail');
@@ -198,11 +294,7 @@ if ( !function_exists('fb_AddThumbColumn') && function_exists('add_theme_support
 					$thumb = wp_get_attachment_image( $attachment_id, array($width, $height), true );
 				}
 			}
-			if ( isset($thumb) && $thumb ) {
-				echo $thumb;
-			} else {
-				echo __('None');
-			}
+			if ( isset($thumb) && $thumb ) { echo $thumb; } else { echo __('None'); }
 		}
 	}
 	// post thumbnails column on posts manage page
@@ -214,7 +306,61 @@ if ( !function_exists('fb_AddThumbColumn') && function_exists('add_theme_support
 	add_action( 'manage_pages_custom_column', 'fb_AddThumbValue', 10, 2 );
 }
 
-// List the terms for Categories taxonomy
+/**
+ *
+ * Get all of the details for the authors on the blog
+ * Most useful for multi author blogs
+ */
+function bm_listAuthors() {
+	global $wpdb;
+/*
+	$query = 'SELECT COUNT(1) FROM ' . $wpdb->users;
+	$count = $wpdb->get_var($query);	
+	print_r($count);
+*/
+	$query = 'SELECT u.ID, u.display_name, u.user_login, u.user_nicename
+			FROM ' . $wpdb->users . ' as u
+			LEFT JOIN ' . $wpdb->usermeta . ' as m on u.ID = m.user_id
+			WHERE m.meta_key = "' . $wpdb->prefix . 'user_level" and m.meta_value > 0';
+			
+	$authors = $wpdb->get_results($query);	
+	$ret = array();
+	
+	// loop through all authors
+	foreach ($authors as $author) {
+		$bbWp = new WP_Query();
+		$bbWp->query('posts_per_page=4&author=' . $author->ID);
+		
+		$posts = array();		
+		// grab authors latest posts
+		if ($bbWp->have_posts()) {
+			while ($bbWp->have_posts()) {
+				$bbWp->the_post();
+				$posts[] = array(
+					'title' => get_the_title(),
+					'excerpt' => get_the_excerpt(),
+					'permalink' => get_permalink(),
+				);
+			}
+		}
+
+		// set author properties
+		$ret[] = array(
+			'id' => $author->ID,			
+			'name' => $author->display_name,
+			'username' => $author->user_login,
+			'authorPageLink' => get_author_posts_url($author->ID, $author->user_nicename),				
+			'posts' => $posts,
+		);			
+	}
+	$ret = apply_filters('bm_listAuthors', $ret);
+	return $ret;	
+}
+
+/**
+ *
+ * List the terms for Categories taxonomy
+ */
 function category_terms_list() {
 	// uses wp_list_categories with Categories taxonomy parameter
 	wp_list_categories( array( 
@@ -227,7 +373,11 @@ function category_terms_list() {
 	);
 	return;
 }
-// List the terms for Tags taxonomy
+
+/**
+ *
+ * List the terms for Tags taxonomy
+ */
 function tags_terms_list() {
 	// uses wp_list_categories with Tags taxonomy parameter
 	wp_list_categories( array( 
@@ -241,7 +391,10 @@ function tags_terms_list() {
 	return;
 }
 
-// Get user avatar
+/**
+ *
+ * Get user avatar
+ */
 function member_get_avatar( $wpcom_user_id, $email, $size, $rating = '', $default = 'http://s.wordpress.com/i/mu.gif' ) {
 	if( !empty( $wpcom_user_id ) && $wpcom_user_id !== false && function_exists( 'get_avatar' ) ) {
 		return get_avatar( $wpcom_user_id, $size );
@@ -267,8 +420,10 @@ function member_get_avatar( $wpcom_user_id, $email, $size, $rating = '', $defaul
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
-// admin classes
+/**
+ *
+ * Admin classes
+ */
 function base_admin_body_class( $classes ) {
 	if ( is_admin() && isset($_GET['action']) ) {
 		$classes .= 'action-'.$_GET['action'];
@@ -281,7 +436,11 @@ function base_admin_body_class( $classes ) {
 	return $classes;
 }
 
-// Generates semantic classes for BODY element
+
+/**
+ *
+ * Generates semantic classes for BODY element
+ */
 function base_body_class( $print = true ) {
 	global $wp_query, $current_user;
 
@@ -305,270 +464,175 @@ function base_body_class( $print = true ) {
 	is_tax() 		? $c[] = 'taxonomy' 	: null;
 	
 	// Special classes for BODY element when a singular post
-	if ( is_singular() ) {
-		$c[] = 'singular';
-	} else {
-		$c[] = 'not-singular';
-	}
+	if ( is_singular() ) { $c[] = 'singular'; }
 
-	// Special classes for BODY element when on a single post
 	if ( is_single() ) {
+	
 		$postID = $wp_query->post->ID;
 		the_post();
-		// Adds post slug class, prefixed by 'slug-'
 		$c[] = 'slug-' . $wp_query->post->post_name;
-
-		// Adds 'single' class and class with the post ID
 		$c[] = 'single postid-' . $postID;
-
-		// Adds classes for the month, day, and hour when the post was published
 		if ( isset( $wp_query->post->post_date ) )
 			thematic_date_classes( mysql2date( 'U', $wp_query->post->post_date ), $c, 's-' );
 
 		// Adds category classes for each category on single posts
 		if ( $cats = get_the_category() )
-			foreach ( $cats as $cat )
-				$c[] = 's-category-' . $cat->slug;
+			foreach ( $cats as $cat ) $c[] = 's-category-' . $cat->slug;
 
 		// Adds tag classes for each tags on single posts
 		if ( $tags = get_the_tags() )
-			foreach ( $tags as $tag )
-				$c[] = 's-tag-' . $tag->slug;
-
+			foreach ( $tags as $tag ) $c[] = 's-tag-' . $tag->slug;
 
 		// Adds taxonomy classes for each tax on single posts
 		$taxonomy = get_taxonomy( get_query_var( 'taxonomy' )); 
 		$tax = $wp_query->get_queried_object();
 		if ( $tax = $wp_query->get_queried_object() )
-			foreach ( $tax as $taxi )
-				$c[] = 's-tag-' . $tax->slug;
+			foreach ( $tax as $taxi ) $c[] = 's-tax-' . $taxi->slug;
 
 		// Adds MIME-specific classes for attachments
 		if ( is_attachment() ) {
+		
 			$mime_type = get_post_mime_type();
-			$mime_prefix = array( 'application/', 'image/', 'text/', 'audio/', 'video/', 'music/' );
-				$c[] = 'attachmentid-' . $postID . ' attachment-' . str_replace( $mime_prefix, "", "$mime_type" );
+			$mime_prefix = array( 
+				'application/', 'image/', 'text/', 
+				'audio/', 'video/', 'music/'
+			);
+			$c[] = 'attach-id-' . $postID . ' attach-'
+				. str_replace( $mime_prefix, "", "$mime_type" );
 		}
 
 		// Adds author class for the post author
 		$c[] = 's-author-' . sanitize_title_with_dashes(strtolower(get_the_author_login()));
 		rewind_posts();
-		
-		// For posts with excerpts
-		if (has_excerpt())
-			$c[] = 's-has-excerpt';
-			
-		// For posts with comments open or closed
-		if (comments_open()) {
-			$c[] = 's-comments-open';	 
-		} else {
-			$c[] = 's-comments-closed';
-		}
-	
-		// For posts with pings open or closed
-		if (pings_open()) {
-			$c[] = 's-pings-open';
-		} else {
-			$c[] = 's-pings-closed';
-		}
-	
-		// For password-protected posts
-		if ( $post->post_password )
-			$c[] = 's-protected';
-	
-		// For sticky posts
-		if (is_sticky())
-			 $c[] = 's-sticky';	 
+
+		if ( has_excerpt() )		$c[] = 's-has-excerpt';
+		if ( pings_open() )  		$c[] = 's-pings-open';
+		if ( comments_open() ) 		$c[] = 's-comments-open';
+		if ( $post->post_password ) $c[] = 's-protected';
+		if ( is_sticky() ) 			$c[] = 's-sticky';
 
 	} // end IF is_single()
 
-	// Author name classes for BODY on author archives
+
 	elseif ( is_author() ) {
 		$author = $wp_query->get_queried_object();
-		$c[] = 'author';
-		$c[] = 'author-' . $author->user_nicename;
+		$c[] = 'author'; $c[] = 'author-' . $author->user_nicename;
 	}
 
-	// Category name classes for BODY on category archvies
 	elseif ( is_category() ) {
 		$cat = $wp_query->get_queried_object();
-		$c[] = 'category';
-		$c[] = 'category-' . $cat->slug;
+		$c[] = 'category'; $c[] = 'category-' . $cat->slug;
 	}
 
-	// Tag name classes for BODY on tag archives
 	elseif ( is_tag() ) {
 		$tags = $wp_query->get_queried_object();
-		$c[] = 'tag';
-		$c[] = 'tag-' . $tags->slug;
+		$c[] = 'tag'; $c[] = 'tag-' . $tags->slug;
 	}
 
-	// Taxonomy name classes for BODY on tax archives ---------------- Taxonomy
 	if ( is_tax()) {
 		$taxonomy = get_taxonomy( get_query_var( 'taxonomy' )); 
-		$tax = $wp_query->get_queried_object();
-		$taxtitle = $tax->name;
-		$c[] = 'tax';
-		$c[] = 'tax-' . $tax->slug;
+		$tax = $wp_query->get_queried_object(); 
+		$taxtitle = $tax->name; 
+		$c[] = 'tax'; $c[] = 'tax-' . $tax->slug;
 	}
-	
-	// Page author for BODY on 'pages'
+
 	elseif ( is_page() ) {
+	
 		$pageID = $wp_query->post->ID;
 		$page_children = wp_list_pages("child_of=$pageID&echo=0");
 		the_post();
 
-		// Adds post slug class, prefixed by 'slug-'
 		$c[] = 'slug-' . $wp_query->post->post_name;
 		$c[] = 'page pageid-' . $pageID;
 		$c[] = 'page-author-' . sanitize_title_with_dashes(strtolower(get_the_author('login')));
 		
 		// Checks to see if the page has children and/or is a child page; props to Adam
-		if ( $page_children )
-			$c[] = 'page-parent';
-		if ( $wp_query->post->post_parent )
-			$c[] = 'page-child parent-pageid-' . $wp_query->post->post_parent;
+		if ( $page_children ) $c[] = 'page-parent';
+		if ( $wp_query->post->post_parent ) $c[] = 'page-child parent-pageid-' . $wp_query->post->post_parent;
 			
-		// For pages with excerpts
-		if (has_excerpt())
-			$c[] = 'page-has-excerpt';
-			
-		// For pages with comments open or closed
-		if (comments_open()) {
-			$c[] = 'page-comments-open';		
-		} else {
-			$c[] = 'page-comments-closed';
-		}
-	
-		// For pages with pings open or closed
-		if (pings_open()) {
-			$c[] = 'page-pings-open';
-		} else {
-			$c[] = 'page-pings-closed';
-		}
-	
-		// For password-protected pages
-		if ( $post->post_password )
-			$c[] = 'page-protected';			
-			
-		// Checks to see if the page is using a template	
+		if (has_excerpt()) $c[] = 'page-has-excerpt';
+		if (comments_open()) { $c[] = 'page-comments-open';	}
+		if (pings_open()) { $c[] = 'page-pings-open'; }
+		if ( $post->post_password ) $c[] = 'page-protected';
+
 		if ( is_page_template() & !is_page_template('default') )
-			$c[] = 'page-template page-template-' . str_replace( '.php', '-php', get_post_meta( $pageID, '_wp_page_template', true ) );
+			$c[] = 'page-template page-template-'. str_replace( '.php', '-php', 
+				get_post_meta( $pageID, '_wp_page_template', true ) );
 		rewind_posts();
+
 	}
 
-	// Search classes for results or no results
 	elseif ( is_search() ) {
 		the_post();
-		if ( have_posts() ) {
-			$c[] = 'search-results';
-		} else {
-			$c[] = 'search-no-results';
-		}
+		if ( have_posts() ) { $c[] = 'search-results'; }
 		rewind_posts();
 	}
-
-	// For when a visitor is logged in while browsing
-	if ( $current_user->ID )
-		$c[] = 'loggedin';
+	if ( $current_user->ID ) $c[] = 'loggedin';
 
 	// Paged classes; for 'page X' classes of index, single, etc.
-	if ( (( $page = $wp_query->get( 'paged' )) || ( $page = $wp_query->get( 'page' )) ) && $page > 1 ) {
+	if( (( $page = $wp_query->get( 'paged' )) 
+		|| ( $page = $wp_query->get( 'page' )) 
+	  ) && $page > 1 ) {
 	
-		// Thanks to Prentiss Riddle, twitter.com/pzriddle, for the security fix below.
-	// Ensures that an integer (not some dangerous script) is passed for the variable
-		$page = intval($page);	
+		$page = intval($page); // make sure $page is an integer
 		$c[] = 'paged-' . $page;
 	
-		if ( is_single() ) {
-			$c[] = 'single-paged-' . $page;
-		} elseif ( is_page() ) {
-			$c[] = 'page-paged-' . $page;
-		} elseif ( is_category() ) {
-			$c[] = 'category-paged-' . $page;
-		} elseif ( is_tag() ) {
-			$c[] = 'tag-paged-' . $page;
-
-		} elseif ( is_tax() ) { // Is Taxonomy --------Taxonomy paged
-			$c[] = 'tax-paged-' . $page;
-
-		} elseif ( is_date() ) {
-			$c[] = 'date-paged-' . $page;
-		} elseif ( is_author() ) {
-			$c[] = 'author-paged-' . $page;
-		} elseif ( is_search() ) {
-			$c[] = 'search-paged-' . $page;
+		if ( is_single() ) 		{ $c[] = 'single-paged-' . $page;
+		} elseif ( is_page() ) 	{ $c[] = 'page-paged-' . $page;
+		} elseif ( is_tag() ) 	{ $c[] = 'tag-paged-' . $page;
+		} elseif ( is_tax() ) 	{ $c[] = 'tax-paged-' . $page;
+		} elseif ( is_date() ) 	{ $c[] = 'date-paged-' . $page;
+		} elseif ( is_author()) { $c[] = 'author-paged-' . $page;
+		} elseif ( is_search()) { $c[] = 'search-paged-' . $page;
+		} elseif ( is_category()) { $c[] = 'category-paged-' . $page;
 		}
 	}
 	
 	// A little Browser detection shall we?
 	$browser = $_SERVER[ 'HTTP_USER_AGENT' ];
-	
 	// Mac, PC ...or Linux
-	if ( preg_match( "/Mac/", $browser ) ){
-		$c[] = 'mac';
-		
-	} elseif ( preg_match( "/Windows/", $browser ) ){
-		$c[] = 'windows';
-		
-	} elseif ( preg_match( "/Linux/", $browser ) ) {
-		$c[] = 'linux';
-
-	} else {
-		$c[] = 'unknown-os';
-	}
+	if ( preg_match( "/Mac/", $browser ))		 { $c[] = 'mac'; }
+	elseif ( preg_match( "/Windows/", $browser)) { $c[] = 'windows'; }
+	elseif ( preg_match( "/Linux/", $browser ))  { $c[] = 'linux'; }
+	else { $c[] = 'unknown-os'; }
 	
 	// Checks browsers in this order: Chrome, Safari, Opera, MSIE, FF
-	if ( preg_match( "/Chrome/", $browser ) ) {
-		$c[] = 'chrome';
-
+	if (preg_match( "/Chrome/", $browser )) 		{ $c[] = 'chrome'; 	/* CHROME */
 		preg_match( "/Chrome\/(\d.\d)/si", $browser, $matches);
 		$ch_version = 'ch' . str_replace( '.', '-', $matches[1] );			
-		$c[] = $ch_version;
-
-	} elseif ( preg_match( "/Safari/", $browser ) ) {
-		$c[] = 'safari';
-		
-		preg_match( "/Version\/(\d.\d)/si", $browser, $matches);
-		$sf_version = 'sf' . str_replace( '.', '-', $matches[1] );			
-		$c[] = $sf_version;
-			
-	} elseif ( preg_match( "/Opera/", $browser ) ) {
-		$c[] = 'opera';
-		
-		preg_match( "/Opera\/(\d.\d)/si", $browser, $matches);
-		$op_version = 'op' . str_replace( '.', '-', $matches[1] );			
-		$c[] = $op_version;
-			
-	} elseif ( preg_match( "/MSIE/", $browser ) ) {
-		$c[] = 'msie';
-		
-		if( preg_match( "/MSIE 6.0/", $browser ) ) {
-				$c[] = 'ie6';
-		} elseif ( preg_match( "/MSIE 7.0/", $browser ) ){
-				$c[] = 'ie7';
-		} elseif ( preg_match( "/MSIE 8.0/", $browser ) ){
-				$c[] = 'ie8';
-		}
-			
-	} elseif ( preg_match( "/Firefox/", $browser ) && preg_match( "/Gecko/", $browser ) ) {
-		$c[] = 'firefox';
-		
-		preg_match( "/Firefox\/(\d)/si", $browser, $matches);
-		$ff_version = 'ff' . str_replace( '.', '-', $matches[1] );			
-		$c[] = $ff_version;
-			
-	} else {
-		$c[] = 'unknown-browser';
+		$c[] = $ch_version; } 
+	elseif (preg_match( "/Safari/", $browser )) 	{ $c[] = 'safari';	/* SAFARI */
+			preg_match( "/Version\/(\d.\d)/si", $browser, $matches);
+			$sf_version = 'sf' . str_replace( '.', '-', $matches[1] );			
+			$c[] = $sf_version; }
+	elseif (preg_match( "/Opera/", $browser )) 		{ $c[] = 'opera';	/* OPERA */
+			preg_match( "/Opera\/(\d.\d)/si", $browser, $matches);
+			$op_version = 'op' . str_replace( '.', '-', $matches[1] );			
+			$c[] = $op_version; }
+	elseif (preg_match( "/MSIE/", $browser )) 		{ $c[] = 'msie';	/* IE */
+		if (preg_match( "/MSIE 6.0/", $browser)) 	{ $c[] = 'ie6'; }	/* IE 6.0 */
+		elseif (preg_match("/MSIE 7.0/",$browser)) 	{ $c[] = 'ie7';}	/* IE 7.0 */
+		elseif (preg_match("/MSIE 8.0/",$browser)) 	{ $c[] = 'ie8';} 	/* IE 8.0 */
+	}
+	elseif (preg_match( "/Firefox/", $browser ) && 
+			preg_match("/Gecko/", $browser )) 		{ $c[] = 'firefox';	/* FIREFOX */
+			preg_match( "/Firefox\/(\d)/si", $browser, $matches);
+			$ff_version = 'ff' . str_replace( '.', '-', $matches[1] );
+			$c[] = $ff_version; }
+	else { 											
+		$c[] = 'unknown-browser'; /* UNKNOWN */
 	}
 	
 	// Separates classes with a single space, collates classes for BODY
 	$c = join( ' ', apply_filters( 'body_class', $c ) ); // Available filter: body_class
-
-	// And tada!
 	return $print ? print($c) : $c;
+
 }
 
+
+/**
+ *
+ */
 // Generates time- and date-based classes for BODY, post DIVs, and comment LIs; relative to GMT (UTC)
 function thematic_date_classes( $t, &$c, $p = '' ) {
 	$t = $t + ( get_option('gmt_offset') * 3600 );
@@ -578,7 +642,10 @@ function thematic_date_classes( $t, &$c, $p = '' ) {
 	$c[] = $p . 'h' . gmdate( 'H', $t ); // Hour
 }
 
-// Multiple Sidebars
+/**
+ *
+ * Multiple Sidebars
+ */
 if ( function_exists('register_sidebar') ) {
 	register_sidebar(array(
 		'name'=>'Blog',
@@ -596,7 +663,10 @@ if ( function_exists('register_sidebar') ) {
 	));
 }
 
-// Wordpress 2.7 Legacy Comments
+/**
+ *
+ * Wordpress 2.7 Legacy Comments
+ */
 function base_comment($comment, $args, $depth) {
 	 $GLOBALS['comment'] = $comment; ?>
 	 <li <?php comment_class(); ?> id="li-comment-<?php comment_ID() ?>">
@@ -623,7 +693,10 @@ function base_comment($comment, $args, $depth) {
 <?php
 }
 
-// Add is_child() comment Conditional
+/**
+ *
+ * Add is_child() comment Conditional
+ */
 function is_child($parent) {
 	global $wp_query;
 	if ($wp_query->post->post_parent == $parent) {

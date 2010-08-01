@@ -128,10 +128,10 @@ class TypeSites {
 			// Check if url has http:// or not so works either way
 			if ( preg_match( "/http(s?):\/\//", $myurl )) {
 				$siteurl = get_post_meta( $post->ID, 'siteurl', true );
-				$mshoturl = 'http://s.WordPress.com/mshots/v1/' . urlencode( $myurl );
+				$mshoturl = 'http://s.WordPress.com/mshots/v1/' . urlencode( serialize( $myurl ));
 			} else {
 				$siteurl = 'http://' . get_post_meta( $post->ID, 'siteurl', true );
-				$mshoturl = 'http://s.WordPress.com/mshots/v1/' . urlencode( 'http://' . $myurl );
+				$mshoturl = 'http://s.WordPress.com/mshots/v1/' . urlencode( serialize( 'http://' . $myurl ));
 			}
 			$imgsrc  = '<img src="' . $mshoturl . '?w=250" alt="' . $title . '" title="' . $title . '" width="250" />';
 		} ?>
@@ -147,18 +147,19 @@ class TypeSites {
         $imgWidth = $mshotsize;
         $myurl = get_post_meta($post->ID, 'siteurl', true);
 		if ( $myurl != '' ) {
+		// /^(https?)+:\/\/(www\d?|([a-zA-Z0-9\.\-])\.+)?([a-zA-Z0-9]+\-?)+(\.\w[2,6])+(\/?([a-zA-Z0-9]+?[\\\/\-\.\?&#%=_]+?\/))?$/
 			if ( preg_match( "/http(s?):\/\//", $myurl )) {
 				$siteurl = get_post_meta( $post->ID, 'siteurl', true );
 				$mshoturl = 'http://s.wordpress.com/mshots/v1/' . urlencode( $myurl );
 			} else {
 				$siteurl = 'http://' . get_post_meta( $post->ID, 'siteurl', true );
-				$mshoturl = 'http://s.wordpress.com/mshots/v1/' . urlencode( 'http://' . $myurl );
+				$mshoturl = 'http://s.wordpress.com/mshots/v1/' . urlencode('http://'.$myurl );
 			}
 		}
-        echo '<img src="' . $mshoturl . '?w=' . $imgWidth . '" alt="' . get_the_title() . '" title="' . get_the_title() . '" />';
+        $mshotimg = '<img src="'.$mshoturl.'?w='.$imgWidth.'" alt="'.get_the_title().'" title="'.get_the_title().'" />';
         
-        return;
+        return array( $siteurl, $mshotimg );
 	}
-		
+			
 } // end of TypeSites{} class
 ?>

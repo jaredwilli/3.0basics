@@ -27,7 +27,7 @@
 	-webkit-border-top-left-radius: 6px;
 	-webkit-border-top-right-radius: 6px;
 }
-#navigation ul.menu li a:hover, ul.menu li a:active {
+#navigation ul.menu li a:hover, #navigation ul.menu li a:active {
 	color:#999; text-shadow:0 1px 0 rgba(255,255,255,.7);
 	position:relative;
 	top:-5px;

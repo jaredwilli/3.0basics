@@ -13,9 +13,6 @@
 </div><!--// end #wrapper -->
 
 <?php wp_footer(); ?>
-<?php if ( is_singular() ) wp_enqueue_script( 'comment-reply' ); ?>
-<script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/global.js"></script>
-<!--<script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/cufon-yui.js"></script>-->
 
 </body>
 </html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head profile="http://gmpg.org/xfn/11">
+<head>
 <meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php bloginfo('charset'); ?>" />
 <title><?php bloginfo('name'); ?> <?php wp_title('',true,''); ?></title>
 <meta name="author" content="freshtilledsoil.com" />
