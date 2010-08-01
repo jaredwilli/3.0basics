@@ -3,14 +3,20 @@
 $functionsdir = TEMPLATEPATH . '/functions';
 // Include your posttypes.php file
 require_once ( $functionsdir . '/posttypes.php' );
-require_once ( $functionsdir . '/widgetclasses.php' );
-require_once ( $functionsdir . '/widgets.php' );
 require_once ( $functionsdir . '/more_functions.php' );
+
+/**
+ * Widgets not yet working properly
+ *
+ * require_once ( $functionsdir . '/widgetclasses.php' );
+ * require_once ( $functionsdir . '/widgets.php' );
+ */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* * * * * * * * * Actions and Filters For Theme * * * * * * * * * * * * * */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+add_action( 'init', 'register_navmenus' );
 add_action( 'admin_head', 'admin_register_head' );
 add_action( 'get_header', 'redirect_to_first_child', 2 );
 
@@ -21,7 +27,7 @@ add_filter( 'wp_list_pages','base_better_lists' );
 add_filter( 'wp_list_categories','base_better_lists' );
 add_filter( 'get_the_excerpt', 'trim_excerpt' );			// remove [...] from excerpts
 add_filter( 'the_generator', 'complete_version_removal' ); 	// remove WP version generated in 
-add_filter( 'wp_footer', 'load_scripts' );
+add_filter( 'wp_foot', 'load_scripts' );
 
 add_theme_support( 'post-thumbnails', array( 'post', 'page', 'site' )); // 
 add_theme_support( 'automatic-feed-links' ); // support for adding RSS feed links
@@ -45,7 +51,6 @@ add_custom_background(); // custom backgrounds support
  *
  * Function for registering wp_nav_menu() in 3 locations
  */
-add_action( 'init', 'register_navmenus' );
 function register_navmenus() {
 	register_nav_menus( array(
 		'Top' 		=> __( 'Top Navigation' ),
@@ -134,16 +139,20 @@ function redirect_to_first_child(){
 /**
  *
  * Scripts
- */
-// if not admin then javascript - required
-function load_scripts() {
-	add_action( 'init', 'bb_scriptSettings' );
-	
-	wp_deregister_script( 'jquery');
-	wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js', false, '1.4.2'); 
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'global', TEMPLATEPATH . '/js/global.js' );
-	wp_enqueue_script( 'comment-reply' );
+ * if not admin then javascript - required
+ *
+if (!is_admin()) {
+	wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js' ); 
+	wp_enqueue_script ( 'jquery','','','',true );	
+	wp_register_script( 'myscript', get_bloginfo('template_directory').'/js/global.js' );
+	wp_enqueue_script ( 'myscript','','','',true );
+	wp_enqueue_script ( 'comment-reply','','','',true );
+}
+*/
+function load_scripts() { ?>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script src="<?php get_bloginfo('template_directory').'/js/global.js'; ?>"></script>
+<?php
 }
 
 /**

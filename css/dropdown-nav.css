@@ -30,8 +30,8 @@
 #navigation ul.menu li a:hover, #navigation ul.menu li a:active {
 	color:#999; text-shadow:0 1px 0 rgba(255,255,255,.7);
 	position:relative;
-	top:-5px;
-	height:25px;
+	top:-3px;
+	height:21px;
 }
 
 /****************** SUB MENU - LEVEL 2 ***********************/
@@ -49,7 +49,7 @@
 	padding:0px; margin:0px;
 	z-index:1000;
 }
-#navigation ul.menu li a:hover ul.sub-menu { background:#ccc;  }
+#navigation ul.menu li a:hover ul.sub-menu { background:#ccc; }
 #navigation ul.sub-menu li { 
 	background:#efefef;
 	border:1px solid #ccc;
@@ -76,4 +76,5 @@
 /* this is controlled by jQuery. Uncomment it for testing.	
 	display: block;
 */
+	display: block;
 }

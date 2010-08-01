@@ -55,10 +55,9 @@
 			<ul id="social">		
 				<li id="facebook"><a href="http://facebook.com/new2wp"><img src="<?php bloginfo('template_directory'); ?>/images/icons/facebook32.png" /></a></li>
 				<li id="twitter"><a href="http://twitter.com/new2wp"><img src="<?php bloginfo('template_directory'); ?>/images/icons/twitter32.png" /></a></li>
+				<li id="rss"><a href="http://feeds.feedburner.com/New2WP"><img src="<?php bloginfo('template_directory'); ?>/images/icons/rss32.png" /></a></li>
+				<li id="email"><a href="http://feedburner.google.com/fb/a/mailverify?uri=New2WP"><img src="<?php bloginfo('template_directory'); ?>/images/icons/email32.png" /></a></li>
 			</ul>
-			<ul id="signup" class="clearfix">
-				<li id="email"><a href="http://feedburner.google.com/fb/a/mailverify?uri=cfs-resources&amp;loc=en_US" title="Signup for Email Updates">Email</a></li>
-				<li id="rss"><a href="<?php bloginfo('rss2_url'); ?>" title="Subscribe to RSS">RSS</a></li>
-			</ul>
+
 		</div>
 	</div><!-- end header -->

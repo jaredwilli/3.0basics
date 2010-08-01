@@ -44,40 +44,34 @@ class TypeSites {
         add_action( 'admin_init', array(&$this, 'admin_init') );
         add_action( 'template_redirect', array(&$this, 'template_redirect') );
         add_action( 'wp_insert_post', array(&$this, 'wp_insert_post'), 10, 2 );
-		add_action( 'manage_posts_custom_column', array(&$this, 'site_edit_columns') );
-		add_filter( 'manage_edit-portfolio_columns', array(&$this, 'site_custom_columns') );
+
+		add_action( 'manage_posts_columns', array ( &$this, 'site_edit_columns' ));
+		add_filter( 'manage_posts_custom_column', array( &$this, 'site_custom_columns' ));
 	}
 
 	// Create the columns and heading title text
 	public function site_edit_columns($columns) {
         $columns = array(
-			'cb' 			=> '<input type="checkbox" />',
-			'title' 		=> 'Site Title',
-			'siteurl' 		=> 'Site Url',
-			'description'   => 'Description',
-			'post_tags' 	=> 'Tags',
+			'cb' 		=> '<input type="checkbox" />',
+			'title' 	=> 'Site Title',
+			'category'	=> 'Category',
+			'post_tags' => 'Tags',
+			'siteurl' 	=> 'Thumbnail',
         );
         return $columns;
     }
-
 	// switching cases based on which $column we show the content of it
-    public function site_custom_columns($column) {
-        global $post;
+    public function site_custom_columns($column) { 
+		global $post;
         switch ($column) {
             case "title" : the_title();
                 break;
-            case "siteurl" : $myurl = get_post_meta( $post->ID, 'siteurl', true );
-				// if $myurl is not an empty string
-                if ($myurl != '') {
-					// echo it out as a link
-					echo '<a href="' . $myurl . '" target="_blank">' . the_title() . '</a>';
-				}
+            case "category" : get_category_link( $post->ID, 'Categories: ', '', ', ','');
+				break;				
+            case "post_tags" : get_the_tag_list( $post->ID, 'Tags: ', '', ', ','');
+                break;
+            case "siteurl" : $m = $this->mshot(100); echo $m[1];
 				break;
-            case "description": the_content();
-                break;
-            case "post_tags" : echo get_the_term_list($post->ID, 'Tags', '', ', ','');
-
-                break;
         }
     }
 
@@ -115,7 +109,7 @@ class TypeSites {
 
 	// Add meta box
 	function admin_init() {
-        add_meta_box( "sites-meta", "Site", array( &$this, "meta_options" ), "site", "side", "low" );
+        add_meta_box( 'sites-meta', 'Site Url (required)', array( &$this, 'meta_options' ), 'site', 'side', 'low' );
     }
 
 	// Admin post meta contents
@@ -128,10 +122,10 @@ class TypeSites {
 			// Check if url has http:// or not so works either way
 			if ( preg_match( "/http(s?):\/\//", $myurl )) {
 				$siteurl = get_post_meta( $post->ID, 'siteurl', true );
-				$mshoturl = 'http://s.WordPress.com/mshots/v1/' . urlencode( serialize( $myurl ));
+				$mshoturl = 'http://s.WordPress.com/mshots/v1/' . urlencode( $myurl );
 			} else {
 				$siteurl = 'http://' . get_post_meta( $post->ID, 'siteurl', true );
-				$mshoturl = 'http://s.WordPress.com/mshots/v1/' . urlencode( serialize( 'http://' . $myurl ));
+				$mshoturl = 'http://s.WordPress.com/mshots/v1/' . urlencode('http://'.$myurl);
 			}
 			$imgsrc  = '<img src="' . $mshoturl . '?w=250" alt="' . $title . '" title="' . $title . '" width="250" />';
 		} ?>
@@ -147,7 +141,8 @@ class TypeSites {
         $imgWidth = $mshotsize;
         $myurl = get_post_meta($post->ID, 'siteurl', true);
 		if ( $myurl != '' ) {
-		// /^(https?)+:\/\/(www\d?|([a-zA-Z0-9\.\-])\.+)?([a-zA-Z0-9]+\-?)+(\.\w[2,6])+(\/?([a-zA-Z0-9]+?[\\\/\-\.\?&#%=_]+?\/))?$/
+/* /^ ((http(s)?)+:\/\/)?(www\d?.)?|([a-zA-Z0-9\.\-_])\.+)?([a-zA-Z0-9]+\-?)+(\.\w[2,6])+(\/?([a-zA-Z0-9]+?[\\\/\-\.\?&#%=_]+?\/))?$/
+*/
 			if ( preg_match( "/http(s?):\/\//", $myurl )) {
 				$siteurl = get_post_meta( $post->ID, 'siteurl', true );
 				$mshoturl = 'http://s.wordpress.com/mshots/v1/' . urlencode( $myurl );

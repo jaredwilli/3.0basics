@@ -128,6 +128,8 @@ h2 .post-title { font-size: 1.6em; }
 h1.breadcrumb { text-transform:capitalize; font-size:1.4em; }
 h2.breadcrumb { text-transform:capitalize; font-size:1.4em; }
 
+
+
 /* Entries */
 .entry { padding:1px; margin-bottom:5px; }
 .entry h1 { margin: 1em 0 .5em;	}
@@ -267,13 +269,8 @@ p.comment-disclaimer { font-size:10px; color:#999; }
 /*** MISCELANEOUS ***/
 
 /* Social Icons */
-ul#social { float:right; position:relative; right:380px; top:-12px; }
-ul#signup { float:right; position:relative; right:230px; top:-15px; }
+ul#social { float:right; position:relative; right:290px; top:-15px; }
 #social li { display:inline-block; margin:2px 3px; } /* Twitter and Facebook icons */
-#email { background:url("images/icons/email-icon.png") no-repeat scroll left center transparent; color:#666666; padding:0 0 0 20px; right:10px; top:205px; }
-#email :hover { text-decoration:underline; }
-#rss { background:url("images/icons/rss-icon.png") no-repeat scroll left center transparent; color:#666666; padding:0 0 0 18px; right:75px; top:190px; }
-#rss :hover { text-decoration:underline; }
 
 /* Counter Buttons & Voting */
 .tweetmeme_button { margin-top:-50px; }
