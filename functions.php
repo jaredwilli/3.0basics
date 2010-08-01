@@ -3,6 +3,9 @@
 $functionsdir = TEMPLATEPATH . '/functions';
 // Include your posttypes.php file
 require_once ( $functionsdir . '/posttypes.php' );
+require_once ( $functionsdir . '/widgetclasses.php' );
+require_once ( $functionsdir . '/widgets.php' );
+require_once ( $functionsdir . '/more_functions.php' );
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* * * * * * * * * Actions and Filters For Theme * * * * * * * * * * * * * */
@@ -14,16 +17,34 @@ add_action( 'get_header', 'redirect_to_first_child', 2 );
 add_filter( 'admin_body_class', 'base_admin_body_class' );
 add_filter( 'admin_footer_text', 'custom_admin_footer' );
 
-// add_action( 'wp_footer', 'js_scripts' );
+add_filter( 'init', 'load_scripts' );
 add_filter( 'wp_list_pages','base_better_lists' );
 add_filter( 'wp_list_categories','base_better_lists' );
 add_filter( 'get_the_excerpt', 'trim_excerpt' );			// remove [...] from excerpts
 add_filter( 'the_generator', 'complete_version_removal' ); 	// remove WP version generated in 
 
-add_theme_support( 'post-thumbnails' );		 // support for post thumbnail feature
+add_theme_support( 'post-thumbnails', array( 'post', 'page', 'site' )); // 
 add_theme_support( 'automatic-feed-links' ); // support for adding RSS feed links
 
-// Function for registering wp_nav_menu() in 3 locations
+// add_custom_image_header(); // custom image in header
+add_custom_background(); // custom backgrounds support
+
+// custom header stuff
+// define('HEADER_TEXTCOLOR', '');
+// bm_define('HEADER_IMAGE', '%s/lib/styles/images/logo.png' );
+// bm_define('HEADER_IMAGE', '' );
+// bm_define('HEADER_IMAGE_WIDTH', 960);
+// bm_define('HEADER_IMAGE_HEIGHT', 100);
+// define('HEADER_IMG_DIR', BM_THEMENAME);
+// define('NO_HEADER_TEXT', true);
+
+// add_custom_image_header('bm_adminHeaderStyle', 'bm_adminHeaderStyle');
+// function bm_adminHeaderStyle () {}
+
+/**
+ *
+ * Function for registering wp_nav_menu() in 3 locations
+ */
 add_action( 'init', 'register_navmenus' );
 function register_navmenus() {
 	register_nav_menus( array(
@@ -61,15 +82,10 @@ function register_navmenus() {
 	}
 	*/
 }
-/* Delete nav menu
+/* 
+Delete nav menu
 wp_delete_nav_menu( $menu );
 */
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/* * * * * * * * * * Registers Custom Taxonomies * * * * * * * * * * * * * */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -78,8 +94,8 @@ wp_delete_nav_menu( $menu );
 
 /**
  *
+ * Add 'first' and 'last' classes to ends of wp_list_pages and wp_list_categories
  */
-//Add 'first' and 'last' classes to ends of wp_list_pages and wp_list_categories
 function base_better_lists($content) {
 
 	$pattern = '/<li class="/is';
@@ -114,27 +130,23 @@ function redirect_to_first_child(){
 	}
 }
 
+
 /**
  *
+ * Scripts
  */
-// Additional Admin Styles and custom Branding
-function admin_register_head() {
-	$url = get_bloginfo('template_directory') . '/css/admin.css';
-	echo '<link rel="stylesheet" type="text/css" href="' . $url . '" />';
+// if not admin then javascript - required
+function load_scripts() {
+	if (!is_admin()) {
+		wp_deregister_script( 'jquery');
+		wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js', false, '1.4.2'); 
+		wp_enqueue_script( 'global', array( 'jquery', get_bloginfo('template_url').'/js/global.js', 1.0, true ));
+		wp_enqueue_script( 'comment-reply');
+	}
 }
 
 /**
- *
- */
-function custom_admin_footer() {
-	echo '<a href="http://new2wp.com">Theme created by New2WP</a>';
-} 
-
-
-/**
- *
- */
-/** Load Scripts
+ * Load Scripts
 	jQuery 1.4.2	-	jquery
 	jQuery UI Core	-	jquery-ui-core
 	jQuery UI Tabs 	-	jquery-ui-tabs
@@ -148,12 +160,6 @@ function custom_admin_footer() {
 	$ver	- String specifying the script version number, if it has one., 
 	$in_footer - If this parameter is true the script is placed at the bottom of the <body>
   );
-**/
-
-
-/**
- *
- * Script settings
  */
 function bb_scriptSettings () {
 	$scripts = array();
@@ -190,18 +196,13 @@ function bb_scriptSettings () {
 	}
 	return apply_filters ('bb_loadScripts', $scripts);	
 }
-
-/**
- * Load scripts
- */
-function bb_loadScripts () {
-	$scripts = (array) bb_scriptSettings();
+function bm_loadScripts () {
+	$scripts = (array) bm_scriptSettings();
 	if (count($scripts) > 0) {
 		foreach ($scripts as $script) {
-			wp_register_script($script[0], $script[1]);
 			wp_enqueue_script($script[0], $script[1]);
 		}
-	}	
+	}
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -209,7 +210,6 @@ function bb_loadScripts () {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
- *
  * generic message for 404 pages
  * Saves adding the same content to many pages
  */
@@ -222,7 +222,6 @@ function bb_404() { ?>
 }
 
 /**
- *
  * do a 404 header and check file types
  * if bad file type then die properly else continue and print 404 message
  */
@@ -245,19 +244,17 @@ function bb_404Response() {
 }
 
 /**
- *
- * Remove [...] from excerpts
  */
-function trim_excerpt($text) { return rtrim($text,'[...]'); }
+function postthumb() {
+	// if post has a thumbnail
+	if ( has_post_thumbnail() ) {
+		the_post_thumbnail( 'thumbnail' );
+	} else { 
+		echo '<img src="'. get_bloginfo('template_directory') .'/images/125banner.gif" alt="No Image" class="thumbnail" />';
+	}
+}
 
 /**
- * Remove version info from head and feeds 
- */
-function complete_version_removal() { return ''; }
-
-
-/**
- *
  *
  * Add support for post thumbnails and add thumb 
  * image to coloumn to post manage page
@@ -357,66 +354,6 @@ function bm_listAuthors() {
 	return $ret;	
 }
 
-/**
- *
- * List the terms for Categories taxonomy
- */
-function category_terms_list() {
-	// uses wp_list_categories with Categories taxonomy parameter
-	wp_list_categories( array( 
-		'style' => 'list', 
-		'hide_empty' => 0, 
-		'taxonomy' => 'categories', 
-		'hierarchical' => true, 
-		'title_li' => __( 'Categories' )
-		)
-	);
-	return;
-}
-
-/**
- *
- * List the terms for Tags taxonomy
- */
-function tags_terms_list() {
-	// uses wp_list_categories with Tags taxonomy parameter
-	wp_list_categories( array( 
-		'style' => 'list', 
-		'hide_empty' => 0, 
-		'taxonomy' => 'post_tags', 
-		'hierarchical' => true, 
-		'title_li' => __( 'Tags' )
-		)
-	);
-	return;
-}
-
-/**
- *
- * Get user avatar
- */
-function member_get_avatar( $wpcom_user_id, $email, $size, $rating = '', $default = 'http://s.wordpress.com/i/mu.gif' ) {
-	if( !empty( $wpcom_user_id ) && $wpcom_user_id !== false && function_exists( 'get_avatar' ) ) {
-		return get_avatar( $wpcom_user_id, $size );
-	}
-	elseif( !empty( $email ) && $email !== false ) {
-		$default = urlencode( $default );
-
-		$out = 'http://www.gravatar.com/avatar.php?gravatar_id=';
-		$out .= md5( $email );
-		$out .= "&amp;size={$size}";
-		$out .= "&amp;default={$default}";
-
-		if( !empty( $rating ) ) {
-			$out .= "&amp;rating={$rating}";
-		}
-		return "<img alt='' src='{$out}' class='avatar avatar-{$size}' height='{$size}' width='{$size}' />";
-	}
-	else {
-		return "<img alt='' src='{$default}' />";
-	}
-}
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -483,11 +420,12 @@ function base_body_class( $print = true ) {
 		if ( $tags = get_the_tags() )
 			foreach ( $tags as $tag ) $c[] = 's-tag-' . $tag->slug;
 
-		// Adds taxonomy classes for each tax on single posts
+		/* Adds taxonomy classes for each tax on single posts - Not working right **
 		$taxonomy = get_taxonomy( get_query_var( 'taxonomy' )); 
 		$tax = $wp_query->get_queried_object();
 		if ( $tax = $wp_query->get_queried_object() )
 			foreach ( $tax as $taxi ) $c[] = 's-tax-' . $taxi->slug;
+		*/
 
 		// Adds MIME-specific classes for attachments
 		if ( is_attachment() ) {
@@ -631,7 +569,6 @@ function base_body_class( $print = true ) {
 
 
 /**
- *
  */
 // Generates time- and date-based classes for BODY, post DIVs, and comment LIs; relative to GMT (UTC)
 function thematic_date_classes( $t, &$c, $p = '' ) {
@@ -643,7 +580,6 @@ function thematic_date_classes( $t, &$c, $p = '' ) {
 }
 
 /**
- *
  * Multiple Sidebars
  */
 if ( function_exists('register_sidebar') ) {
