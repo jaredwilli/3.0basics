@@ -6,7 +6,7 @@
  * @param array args previously specified arguments
  * @param int postCount the number of posts to display
  */
-function bm_popularPosts ($args = array(), $displayComments = TRUE, $interval = '') {
+function bb_popularPosts ($args = array(), $displayComments = TRUE, $interval = '') {
 	global $wpdb;	
 	$postCount = 5;
 	$request = 'SELECT * FROM ' . $wpdb->posts . ' WHERE ';
@@ -17,9 +17,9 @@ function bm_popularPosts ($args = array(), $displayComments = TRUE, $interval = 
 	$posts = $wpdb->get_results($request);
 	if (count($posts) >= 1) {	
 		$defaults = array (
-			'title' => __('Popular Posts', BM_THEMENAME),
+			'title' => __('Popular Posts', BB_BASE),
 		);
-		$args = bm_defaultArgs($args, $defaults);
+		$args = bb_defaultArgs($args, $defaults);
 		foreach ($posts as $post) {
 			wp_cache_add($post->ID, $post, 'posts');
 			$popularPosts[] = array(
