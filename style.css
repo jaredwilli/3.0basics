@@ -128,10 +128,10 @@ h2 .post-title { font-size: 1.6em; }
 h1.breadcrumb { text-transform:capitalize; font-size:1.4em; }
 h2.breadcrumb { text-transform:capitalize; font-size:1.4em; }
 
-
+.post-tags { padding: 0 0 0 18px; background:url(images/icons/tags-icon.png) left top no-repeat; }
 
 /* Entries */
-.entry { padding:1px; margin-bottom:5px; }
+.entry { padding:1px; margin-bottom:5px; background:#fff; }
 .entry h1 { margin: 1em 0 .5em;	}
 .entry h2 { margin: 1.07em 0 .535em; }
 .entry h3 { margin: 1.14em 0 .57em; }
@@ -149,6 +149,7 @@ h2.breadcrumb { text-transform:capitalize; font-size:1.4em; }
 /* Sites */
 .sites { border-bottom:5px solid #EFEFEF; margin:0 0 20px; padding:0 0 20px; }
 .site-thumbnail { float:left; margin:0 20px 0 0; }
+.site-bigthumb  { margin:12px 0px; }
 .site-thumbnail a img, .site-bigthumb a img { border:1px solid #cdcdcd;
 	border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px;
 	box-shadow:0 0 2px rgba(100,100,100,.6);
@@ -262,7 +263,7 @@ form#commentform label { width:250px; float:left; }
 form#commentform input { float:left; margin:0 0 12px 0; }
 form#commentform textarea { padding:4px; width:530px; }
 #commentsform #rules-toggle { height:26px; margin:-10px 0 0; padding:0; }
-p.comment-rules { background: #fff6bf; text-align: left; padding: 5px 20px 5px 20px; border-top: 2px solid #ffd324; border-bottom: 2px solid #ffd324; }
+p.comment-rules { background: #f7fbff; text-align: left; padding: 5px 20px 5px 20px; border: 1px solid #cdcdcd; width:500px; }
 p.comment-disclaimer { font-size:10px; color:#999; }
 
 

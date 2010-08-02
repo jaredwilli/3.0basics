@@ -148,9 +148,9 @@ if (!is_admin()) {
 }
 */
 function my_js() { ?>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
-	<script src="<?php bloginfo('template_directory').'/js/global.js'; ?>"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js" type="text/javascript"></script>
+	<script src="<?php bloginfo('template_directory').'/js/global.js'; ?>" type="text/javascript"></script>
 <?php
 }
 
@@ -209,6 +209,20 @@ function bm_loadScripts () {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* * * * * * * * * Useful Functions and Features * * * * * * * * * * * * * */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+// Remove dashboard widgets
+add_action( 'admin_menu', 'remove_dashboard_boxes' );
+function remove_dashboard_boxes() {
+        // remove_meta_box( 'dashboard_right_now', 'dashboard', 'core' ); // Right Now Overview 
+        // remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'core' ); // Incoming Links
+        remove_meta_box( 'dashboard_quick_press', 'dashboard', 'core' ); // Quick Press Box
+        remove_meta_box( 'dashboard_plugins', 'dashboard', 'core' ); // Plugins Box
+        remove_meta_box( 'dashboard_recent_drafts', 'dashboard', 'core' ); // Recent Drafts Box
+        remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'core' ); // Recent Comments
+        remove_meta_box( 'dashboard_primary', 'dashboard', 'core' ); // WordPress Development 
+        remove_meta_box( 'dashboard_secondary', 'dashboard', 'core' ); // Other WordPress News
+}
+
 
 /**
  * generic message for 404 pages

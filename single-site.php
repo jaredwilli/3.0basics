@@ -23,7 +23,7 @@
 				
 			<div class="entry">
 				<?php the_content( __( '(More ...)' )); ?>
-				<div class="fl post-tags"><?php the_tags( __( 'Tags: ' ), ', ', ' ' ); ?></div>
+				<div class="fl post-tags"><?php the_tags( __( ' ' ), ', ', ' ' ); ?></div>
 				<div class="fr edit-link"><?php edit_post_link( __( 'Edit' ) ); ?></div>
 				<div class="site-bigthumb" align="center">
 					<a href="<?php echo $a[0]; ?>" title="<?php the_title(); ?>">
