@@ -4,7 +4,7 @@ Theme URL: http://new2wp.com
 Description: A WordPress 3.0 supported theme framework by New2WP.com. Includes ready to use features from 3.0.
 Tags: white, light, fixed-width,custom-background,custom-menu,threaded-comments,two-columns
 Author: Jared Williams
-Author URI: http://new2wp.com
+Author URI: http://new2wp.com/pro/basic-theme-framework-wordpress3-custom-post-type/
 Version: 1.5
 */
 
@@ -251,11 +251,11 @@ ol.commentlist .comment-num { float:right; display:inline; font-size:36px; color
 .commentlist .comment { margin-bottom: 20px; }
 .commentlist .children { margin-left: 30px; }
 .commentlist .children li { margin-left: -20px; padding-left: 20px;	background: transparent url(images/icons/arrow-up.png) top left no-repeat; }
-#content ol.commentlist li.bypostauthor .author-data { background:#1ebe89; }
+#content ol.commentlist li.bypostauthor .author-data { background:#4D5055; }
 #content ol.commentlist li.bypostauthor h3 a,
-#content ol.commentlist li.bypostauthor h3 { color:#666; }
-#content ol.commentlist li.bypostauthor .comment-meta { color:#acefdf; }
-#content ol.commentlist li.bypostauthor .comment-meta a { color:#d8fff6; font-weight:bold; }
+#content ol.commentlist li.bypostauthor h3 { color:#fff; text-shadow:0 1px 0 #333; }
+#content ol.commentlist li.bypostauthor .comment-meta { color:#f7fbff; }
+#content ol.commentlist li.bypostauthor .comment-meta a { color:#f7fbff; font-weight:bold; }
 #content ol.commentlist li.bypostauthor img { border:1px solid #acefdf; }
 
 /* Comment Form */
