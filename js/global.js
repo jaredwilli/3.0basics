@@ -18,7 +18,7 @@ $(function(){
 	});
 
 	/* Bobble Upwards on Hover */
-	$('a').hover(function() {
+	$('.post a').hover(function() {
 		$(this).children('img').stop().animate({ "margin-top" : "-10px"}, 200);
 	}, function() {
 		$(this).children('img').stop().animate({ "margin-top" : "0px"}, 200);
