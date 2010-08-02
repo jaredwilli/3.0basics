@@ -36,7 +36,7 @@ class TypeSites {
 			'query_var' => 'site',
 			'capability_type' => 'post',
 			'rewrite' => array('slug' => 'site'), // Permalinks. Fixes a 404 bug
-			'menu_icon'  => get_bloginfo('template_directory').'/images/d-sites10.png',
+			'menu_icon'  => get_bloginfo('template_directory').'/images/sites-icon.png',
 			'taxonomies' =>  array('category', 'post_tag'), // Add tags and categories taxonomies
 			'supports' => array('title','editor','author','comments')
         );
