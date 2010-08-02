@@ -1,6 +1,15 @@
 <?php
+define( 'N2_INC_PATH', get_template_directory() . '/inc' );
+define( 'N2_INC_URL', get_bloginfo('template_directory') . '/inc' );
+define( 'N2_FUNC_PATH', get_template_directory() . '/func' ); 
+define( 'N2_FUNC_URL', get_bloginfo('template_directory') . '/func' );
+define( 'N2_JS_PATH',  get_template_directory() . '/js' );
+define( 'N2_JS_URL', get_bloginfo('template_directory' ).'/js' );
+
 // Create a variable to the path to functions directory
-$functionsdir = TEMPLATEPATH . '/functions';
+$functionsdir 	= TEMPLATEPATH . '/functions';
+$jsdir 			= TEMPLATEPATH . '/js';
+
 // Include your posttypes.php file
 require_once ( $functionsdir . '/posttypes.php' );
 require_once ( $functionsdir . '/more_functions.php' );
@@ -32,20 +41,20 @@ add_filter( 'wp_footer', 'my_js' );
 add_theme_support( 'post-thumbnails', array( 'post', 'page', 'site' )); // 
 add_theme_support( 'automatic-feed-links' ); // support for adding RSS feed links
 
-// add_custom_image_header(); // custom image in header
 add_custom_background(); // custom backgrounds support
 
+// add_custom_image_header(); // custom image in header
 // custom header stuff
 // define('HEADER_TEXTCOLOR', '');
-// bm_define('HEADER_IMAGE', '%s/lib/styles/images/logo.png' );
-// bm_define('HEADER_IMAGE', '' );
-// bm_define('HEADER_IMAGE_WIDTH', 960);
-// bm_define('HEADER_IMAGE_HEIGHT', 100);
-// define('HEADER_IMG_DIR', BM_THEMENAME);
+// bb_define('HEADER_IMAGE', '%s/lib/styles/images/logo.png' );
+// bb_define('HEADER_IMAGE', '' );
+// bb_define('HEADER_IMAGE_WIDTH', 960);
+// bb_define('HEADER_IMAGE_HEIGHT', 100);
+// define('HEADER_IMG_DIR', BB_BASE);
 // define('NO_HEADER_TEXT', true);
 
-// add_custom_image_header('bm_adminHeaderStyle', 'bm_adminHeaderStyle');
-// function bm_adminHeaderStyle () {}
+// add_custom_image_header('bb_adminHeaderStyle', 'bb_adminHeaderStyle');
+// function bb_adminHeaderStyle () {}
 
 /**
  *
@@ -102,7 +111,6 @@ wp_delete_nav_menu( $menu );
  * Add 'first' and 'last' classes to ends of wp_list_pages and wp_list_categories
  */
 function base_better_lists($content) {
-
 	$pattern = '/<li class="/is';
 	$content = preg_replace($pattern, '<li class="first ', $content, 1);
 	$pattern = '/<li class="(?!.*<li class=")/is';
@@ -141,7 +149,7 @@ function redirect_to_first_child(){
  *
 if (!is_admin()) {
 	wp_register_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js' ); 
-	wp_enqueue_script ( 'jquery','','','',true );	
+	wp_enqueue_script ( 'jquery','','','',true );
 	wp_register_script( 'myscript', get_bloginfo('template_directory').'/js/global.js' );
 	wp_enqueue_script ( 'myscript','','','',true );
 	wp_enqueue_script ( 'comment-reply','','','',true );
@@ -150,7 +158,7 @@ if (!is_admin()) {
 function my_js() { ?>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js" type="text/javascript"></script>
-	<script src="<?php bloginfo('template_directory').'/js/global.js'; ?>" type="text/javascript"></script>
+	<script src="<?php bloginfo("template_directory"); ?>/js/global.js" type="text/javascript"></script>
 <?php
 }
 

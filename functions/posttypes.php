@@ -29,12 +29,14 @@ class TypeSites {
                 'not_found' =>  __( 'No sites found in search' ),
                 'not_found_in_trash' => __( 'No sites found in Trash' ),
 			),
-			'public' => true, 'show_ui' => true,
+			'public' => true, 
+			'show_ui' => true,
 			'_builtin' => false,
-			'capability_type' => 'post',
 			'hierarchical' => false,
-			'rewrite' => array('slug' => 'site'), // Permalinks. Fixes a 404 bug
 			'query_var' => 'site',
+			'capability_type' => 'post',
+			'rewrite' => array('slug' => 'site'), // Permalinks. Fixes a 404 bug
+			'menu_icon'  => get_bloginfo('template_directory').'/images/d-sites10.png',
 			'taxonomies' =>  array('category', 'post_tag'), // Add tags and categories taxonomies
 			'supports' => array('title','editor','author','comments')
         );
