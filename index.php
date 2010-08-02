@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 </head>
 <body class="<?php base_body_class(); ?>">
-<?php include(TEMPLATEPATH . '/branding.php'); ?>
+<?php include( TEMPLATEPATH . '/branding.php' ); ?>
 
 <div id="content" class="inner clearfix">
 	<div id="content-main">
@@ -14,8 +14,10 @@
 				<li class="commentdata"><?php comments_popup_link('No Comments', '1 Comment', '% Comments'); ?></li>
 			</ul>
 			<div class="entry clearfix">
-				<?php the_content(__('Read more'));?>
+				<?php the_content(__('Read more')); ?>
 			</div><!--// end #entry -->
+				<div class="fl post-tags"><?php the_tags( __( ' ' ), ' , ', ' ' ); ?></div>
+				<div class="fr edit-link"><?php edit_post_link( __( 'Edit' ) ); ?></div>
 		</div><!--// end #post-<?php the_ID(); ?> -->
 	
 	<?php endwhile; ?>
@@ -33,6 +35,8 @@
 	endif; ?>
 	
 	</div><!-- end #content-main -->
-	<div id="content-sub"><?php get_sidebar(); ?></div> <!-- end #content-sub -->
+	<div id="content-sub">
+		<?php get_sidebar(); ?>
+	</div> <!-- end #content-sub -->
 </div><!-- end #content -->
 <?php get_footer(); ?>

@@ -18,6 +18,8 @@
 		<div class="entry clearfix">
 			<?php the_content(__('Read more'));?>
 		</div><!--// end #entry -->
+				<div class="fl post-tags"><?php the_tags( __( ' ' ), ' , ', ' ' ); ?></div>
+				<div class="fr edit-link"><?php edit_post_link( __( 'Edit' ) ); ?></div>
 	</div><!--// end #post-<?php the_ID(); ?> -->
 	
 	<?php comments_template(); ?>
