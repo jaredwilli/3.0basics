@@ -19,9 +19,9 @@ $(function(){
 
 	/* Bobble Upwards on Hover */
 	$('a').hover(function() {
-		$(this).children('img').stop().animate({ "top" : "-10px"}, 200);
+		$(this).children('img').stop().animate({ "margin-top" : "-10px"}, 200);
 	}, function() {
-		$(this).children('img').stop().animate({ "top" : "0px"}, 200);
+		$(this).children('img').stop().animate({ "margin-top" : "0px"}, 200);
 		
 	});
 
