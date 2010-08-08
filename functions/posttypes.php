@@ -56,9 +56,10 @@ class TypeSites {
         $columns = array(
 			'cb' 		=> '<input type="checkbox" />',
 			'title' 	=> 'Site Title',
+			'url'	 	=> 'URL',
 			'category'	=> 'Category',
 			'post_tags' => 'Tags',
-			'siteurl' 	=> 'Thumbnail',
+			'siteurl' 	=> 'Screenshot',
         );
         return $columns;
     }
@@ -68,11 +69,13 @@ class TypeSites {
         switch ($column) {
             case "title" : the_title();
                 break;
-            case "category" : get_category_link( $post->ID, 'Categories: ', '', ', ','');
+            case "url" : $m = $this->mshot(100); echo '<a href="'.$m[0].'" target="_blank">'.$m[0].'</a>';
+				break;
+            case "category" : the_category();
 				break;				
-            case "post_tags" : get_the_tag_list( $post->ID, 'Tags: ', '', ', ','');
+            case "post_tags" : the_tags('',', ');
                 break;
-            case "siteurl" : $m = $this->mshot(100); echo $m[1];
+            case "siteurl" : $m = $this->mshot(150); echo $m[1];
 				break;
         }
     }
