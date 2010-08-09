@@ -1,3 +1,33 @@
+/*
+=> Notices
+Notice: Undefined index: post_type in \wp-content\themes\30-basics\functions\posttypes.php on line 83
+=> Deprecated
+Function: get_the_author_login()
+Used in wp-content/themes/30-basics/functions.php on line 466.
+- use get_the_author_meta('login') instead
+Argument in get_the_author()
+Used in wp-content/themes/30-basics/functions.php on line 508.
+- no alternatives
+Function: get_archives()
+Used in wp-content/themes/30-basics/sidebar.php on line 45.
+- use wp_get_archives();
+
+/ menubar CSS is totally messed up
+=> Menubars are not accepting made-menu
+=> comment_form(); is required to use in the comments.php
+=> Missing GPL or compatible license information
+=> missing required theme supports
+
+/ suggest moving the </head> and <body back up to the header.php
+
+=> use get_template_part(); instead of include i.e. branding.php
+=> wp_nav_menu is used but add_theme_support('menus'); is missing
+=> scripts need to be enqueued (my_js())
+/ should use wordpress jquery enqueued otherwise enqueue the remote
+/ functions should have a unique identifier prefix'ing them, specific to the theme example: basics_postthumb();
+*/
+
+
 /* 
 Theme Name: 3.0 Basics
 Theme URL: http://new2wp.com

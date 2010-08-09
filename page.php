@@ -4,7 +4,6 @@
 
 	<?php get_template_part( 'loop', 'page' ); ?>
 
-
 	</div><!-- end #content-main -->
 	<div id="content-sub">
 		<?php get_sidebar(); ?>
