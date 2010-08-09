@@ -42,7 +42,7 @@
 	<li>
 		<h2>Recent Posts</h2>
 		<ul>
-			<?php get_archives('postbypost', 10); ?>
+			<?php wp_get_archives('postbypost', 10); ?>
 		</ul>
 	</li>
 	<li>

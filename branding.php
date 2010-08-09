@@ -1,3 +1,5 @@
+</head>
+<body class="<?php base_body_class(); ?>">
 <div id="wrapper">
 	<div id="header">
 		<div id="branding" class="inner clearfix">
@@ -60,4 +62,4 @@
 			</ul>
 
 		</div>
-	</div><!-- end header -->
+	</div><!-- end header -->	

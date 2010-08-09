@@ -38,6 +38,7 @@ add_filter( 'get_the_excerpt', 'trim_excerpt' );			// remove [...] from excerpts
 add_filter( 'the_generator', 'complete_version_removal' ); 	// remove WP version generated in 
 add_filter( 'wp_footer', 'my_js' );
 
+add_theme_support( 'menus' );
 add_theme_support( 'post-thumbnails', array( 'post', 'page', 'site' )); // 
 add_theme_support( 'automatic-feed-links' ); // support for adding RSS feed links
 
@@ -155,11 +156,10 @@ if (!is_admin()) {
 	wp_enqueue_script ( 'comment-reply','','','',true );
 }
 */
-function my_js() { ?>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js" type="text/javascript"></script>
-	<script src="<?php bloginfo("template_directory"); ?>/js/global.js" type="text/javascript"></script>
-<?php
+function my_js() {
+	wp_enqueue_script( 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js','','',true );
+	wp_enqueue_script( 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js','','',true );
+	wp_enqueue_script( get_bloginfo("template_directory") . '/js/global.js','','',true );
 }
 
 /**
@@ -205,8 +205,8 @@ function bb_scriptSettings () {
 	}
 	return apply_filters ('bb_loadScripts', $scripts);	
 }
-function bm_loadScripts () {
-	$scripts = (array) bm_scriptSettings();
+function bb_loadScripts () {
+	$scripts = (array) bb_scriptSettings();
 	if (count($scripts) > 0) {
 		foreach ($scripts as $script) {
 			wp_enqueue_script($script[0], $script[1]);
@@ -238,7 +238,7 @@ function remove_dashboard_boxes() {
  */
 function bb_404() { ?>
 	<div class="error message message_404">
-		<h2 class="title"><?php _e( 'O_o Great Googly Moogly!! Not Found!!!' ); ?></h2>
+		<h2 class="title"><?php _e( 'O_o Great Googly Moogly! Not Found!!' ); ?></h2>
 		<p><?php _e( 'What did you lose this time?' ); ?></p>
 	</div>
 <?php 
@@ -463,7 +463,7 @@ function base_body_class( $print = true ) {
 		}
 
 		// Adds author class for the post author
-		$c[] = 's-author-' . sanitize_title_with_dashes(strtolower(get_the_author_login()));
+		$c[] = 's-author-' . sanitize_title_with_dashes(strtolower(get_the_author_meta('display_name')));
 		rewind_posts();
 
 		if ( has_excerpt() )		$c[] = 's-has-excerpt';
@@ -505,7 +505,7 @@ function base_body_class( $print = true ) {
 
 		$c[] = 'slug-' . $wp_query->post->post_name;
 		$c[] = 'page pageid-' . $pageID;
-		$c[] = 'page-author-' . sanitize_title_with_dashes(strtolower(get_the_author('login')));
+		$c[] = 'page-author-' . sanitize_title_with_dashes(strtolower(get_the_author_meta('login')));
 		
 		// Checks to see if the page has children and/or is a child page; props to Adam
 		if ( $page_children ) $c[] = 'page-parent';

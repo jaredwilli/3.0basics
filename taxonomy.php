@@ -1,10 +1,9 @@
 <?php get_header(); ?>
-</head>
-<body class="<?php base_body_class(); ?>">
-
-<?php include(TEMPLATEPATH . '/branding.php'); ?>
 <div id="content" class="inner clearfix">
-	<div id="content-main">
+	<div id="content-main" role="main">
+
+	<?php get_template_part( 'loop', 'site' ); ?>
+
 
 <?php
 // Create list of taxonomy terms and list the posts under each term
@@ -57,6 +56,8 @@ if ($tax_terms) {
 ?>
 
 	</div><!-- end #content-main -->
-	<div id="content-sub"><?php get_sidebar(); ?></div> <!-- end #content-sub -->
+	<div id="content-sub">
+		<?php get_sidebar(); ?>
+	</div> <!-- end #content-sub -->
 </div><!-- end #content -->
 <?php get_footer(); ?>

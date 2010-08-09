@@ -1,10 +1,8 @@
 <?php get_header(); ?>
-</head>
-<body class="<?php base_body_class(); ?>">
-<?php include(TEMPLATEPATH . '/branding.php'); ?>
-
 <div id="content" class="inner clearfix">
-	<div id="content-main">
+	<div id="content-main" role="main">
+
+	<?php get_template_part( 'loop', 'site' ); ?>
 
 	<h1 class="breadcrumb"><?php /* Search Count */ 
 	$allsearch = &new WP_Query("s=$s&showposts=-1"); 

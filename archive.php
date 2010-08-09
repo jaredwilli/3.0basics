@@ -1,10 +1,6 @@
 <?php get_header(); ?>
-</head>
-<body class="<?php base_body_class(); ?>">
-<?php include(TEMPLATEPATH . '/branding.php'); ?>
-
 <div id="content" class="inner clearfix">
-	<div id="content-main">
+	<div id="content-main" role="main">
 
 <?php if (have_posts()) : ?>
 <?php rewind_posts(); ?>

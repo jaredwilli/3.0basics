@@ -175,8 +175,85 @@ h2.breadcrumb { text-transform:capitalize; font-size:1.4em; }
 #topnav li a:hover { background:#f7fbff; color: #999; }
 
 /* Header Nav styles in dropdown-nav.css */
+/***************** DROP DOWN MENU **********************/
+#navigation { margin: 0 auto; width: 960px; display:block; }
+#navigation { border-bottom:1px solid #ccc; height:40px; left:0; position:relative; top:40px; z-index:0; }
 
+/***************** SUB MENU - Main Tabs **********************/
+/*************************************************************/
+#navigation ul.menu { position:absolute; list-style:none; margin-bottom:0px; width:480px; display:inline-block; left:3px; }
+#navigation ul.menu li {
+	margin:1px 6px 0 0; 
+	padding:0px; 
+	float:left; 
+}
+#navigation ul.menu li a {
+	padding:5px; margin:0; 
+	display:block; overflow:hidden;
+	color:#999; text-shadow:0 1px 0 rgba(255,255,255,.9);
+	text-align:center; text-decoration:none; 
+	font-size:13px;
+	font-family: Helvetica, Verdana; 
+	border:1px solid #ccc;
+	border-bottom:1px solid #fff;
+	background:#efefef;
+	background-image: -moz-linear-gradient(top, #efefef, #f7f7f7);
+	background-image: -webkit-gradient(linear,left top,left bottom, color-stop(0, #efefef),color-stop(1, #f7f7f7));
+	-moz-border-radius-topleft: 6px;
+	-moz-border-radius-topright: 6px;
+	-webkit-border-top-left-radius: 6px;
+	-webkit-border-top-right-radius: 6px;
+}
+#navigation ul.menu li a:hover, #navigation ul.menu li a:active {
+	color:#999; text-shadow:0 1px 0 rgba(255,255,255,.7);
+	position:relative;
+	top:-3px;
+	height:21px;
+}
 
+/****************** SUB MENU - LEVEL 2 ***********************/
+/*************************************************************/
+#navigation .sub-menu li { 
+	/* Width of drop menu for changing number of columns:
+	  1 colum: 200px;
+	  2 columns: 424px;
+	  3 columns: 638px;
+	  4 columns: 848px;
+	  */
+	background: #efefef;
+	position:relative; 
+	overflow:hidden;
+	padding:0px; margin:0px;
+	z-index:1000;
+}
+#navigation ul.menu li a:hover ul.sub-menu { background:#ccc; }
+#navigation ul.sub-menu li { 
+	background:#efefef;
+	border:1px solid #ccc;
+	display:block; float:left; margin:-5px; padding:0;
+	-moz-border-radius:0px; border-radius:0px; -webkt-border-radius:0px; 
+}
+#navigation ul ul.sub-menu li a {
+	line-height:1.3em; font-size:13px; color:#666; text-shadow:0 1px 0 rgba(255,255,255,.7);
+	margin:0px; padding:10px 5px; text-align:center;
+}
+#navigation ul ul.sub-menu a:hover {
+	color:#666; text-shadow:0 1px 0 rgba(255,255,255,.9);
+	background-image: -moz-linear-gradient(top, #d6e7f7, #deeff7);
+	background-image: -webkit-gradient(linear,left top,left bottom, color-stop(0, #d6e7f7),color-stop(1, #deeff7));
+/*	background:#e3ecf3; */
+}
+
+#navigation ul ul {
+	display: none; /* For testing, change to display: block; */
+	list-style:none;
+	z-index:100;
+}
+#navigation ul li:hover > ul {
+/* this is controlled by jQuery. Uncomment it for testing.	
+	display: block;
+*/
+}
 
 /* Footer Navigation */
 #site-info .menu ul { float:right; width:600px; display: inline-block; }
