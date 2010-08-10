@@ -4,6 +4,8 @@
 <div id="content" class="inner clearfix">
 	<div id="content-main" role="main">
 
+	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+
 		<div <?php post_class('clearfix'); ?> id="post-<?php the_ID(); ?>">
 			<h1 class="post-title"><a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a></h1>
 			<ul class="postinfo clearfix">

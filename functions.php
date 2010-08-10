@@ -21,13 +21,11 @@ require_once ( $functionsdir . '/more_functions.php' );
  * require_once ( $functionsdir . '/widgets.php' );
  */
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* * * * * * * * * Actions and Filters For Theme * * * * * * * * * * * * * */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 add_action( 'init', 'bb_register_navmenus' );
 add_action( 'admin_head', 'bb_admin_register_head' );
 add_action( 'get_header', 'bb_redirect_to_first_child', 2 );
+add_action( 'admin_menu', 'bb_remove_dashboard_boxes' );
 
 add_filter( 'admin_body_class', 'bb_base_admin_body_class' );
 add_filter( 'admin_footer_text', 'custom_admin_footer' );
@@ -36,7 +34,7 @@ add_filter( 'wp_list_pages', 'bb_base_better_lists' );
 add_filter( 'wp_list_categories', 'bb_base_better_lists' );
 add_filter( 'get_the_excerpt', 'trim_excerpt' );			// remove [...] from excerpts
 add_filter( 'the_generator', 'complete_version_removal' ); 	// remove WP version generated in 
-add_filter( 'wp_footer', 'my_js' );
+add_action( 'wp_footer', 'my_init_method' );
 
 add_theme_support( 'menus' );
 add_theme_support( 'post-thumbnails', array( 'post', 'page' )); // 
@@ -156,11 +154,13 @@ if (!is_admin()) {
 	wp_enqueue_script ( 'comment-reply','','','',true );
 }
 */
-function my_js() {
-	wp_enqueue_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js','','',true );
-	wp_enqueue_script( 'jquery-ui-core', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js','','',true );
-	wp_enqueue_script( 'my_script', get_bloginfo("template_directory") . '/js/global.js','','',true );
+
+function my_init_method() {
+	echo '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>';
+	echo '<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>';
+	echo '<script src="'. get_bloginfo("template_directory") .'/js/global.js"></script>';
 }
+
 
 /**
  * Load Scripts

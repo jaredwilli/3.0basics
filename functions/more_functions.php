@@ -57,7 +57,7 @@ function xwp_dofollow($str) {
 /**
  */
 // Additional Admin Styles and custom Branding
-function admin_register_head() {
+function bb_admin_register_head() {
 	$url = get_bloginfo('template_directory') . '/css/admin.css';
 	echo '<link rel="stylesheet" type="text/css" href="' . $url . '" />';
 }
