@@ -1,4 +1,6 @@
 <?php get_header(); ?>
+<?php get_template_part( 'branding' ); ?>
+
 <div id="content" class="inner clearfix">
 	<div id="content-main" role="main">
 

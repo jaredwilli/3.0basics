@@ -1,9 +1,8 @@
 <?php get_header(); ?>
+<?php get_template_part( 'branding' ); ?>
+
 <div id="content" class="inner clearfix">
 	<div id="content-main" role="main">
-
-	<?php get_template_part( 'loop', 'site' ); ?>
-
 
 <?php
 // Create list of taxonomy terms and list the posts under each term

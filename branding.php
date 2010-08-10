@@ -1,5 +1,3 @@
-</head>
-<body class="<?php base_body_class(); ?>">
 <div id="wrapper">
 	<div id="header">
 		<div id="branding" class="inner clearfix">
@@ -9,7 +7,7 @@
 					// Using wp_nav_menu() to display menu
 					wp_nav_menu( array(
 						'menu' => 'Top', // Select the menu to show by Name
-						'class' => '',
+						'class' => 'nav-top',
 						'container' => false, // Remove the navigation container div
 						'theme_location' => 'Top Navigation'
 						)

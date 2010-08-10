@@ -1,15 +1,14 @@
 <?php get_header(); ?>
+<?php get_template_part( 'branding' ); ?>
+
 <div id="content" class="inner clearfix">
 	<div id="content-main" class="error-404" role="main">
 
-	<?php get_template_part( 'loop', 'site' ); ?>
-
 		<h1 class="post-title">Something is missing&hellip;</h1>
 		<h3>We're very sorry, but that page doesn't exist or has been moved.</h3>
-		<ol>
-			<li>Please make sure you have the right URL.</li>
-			<li>If you still can't find what you're looking for, try using the search form below.</li>
-		</ol>
+
+		<p>Please make sure you have the right URL. If you still can't find what you're looking for, try using the search form below.</p>
+
 		<p>We're sorry for any inconvenience.</p>
 	
 		<div id="searchform">

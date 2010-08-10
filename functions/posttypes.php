@@ -12,7 +12,7 @@ class TypeSites {
 
 	// Store the data
 	public $meta_fields = array( 'title', 'description', 'site', 'siteurl', 'category', 'post_tags' );
-	
+	public $siteurl = 'http://';
 
 	// The post type constructor
 	public function TypeSites() {
@@ -45,7 +45,9 @@ class TypeSites {
 
 	// Initialize the methods
         add_action( 'admin_init', array( &$this, 'admin_init' ));
-        add_action( 'template_redirect', array( &$this, 'template_redirect' ));
+        /*
+		add_action( 'template_redirect', array( &$this, 'template_redirect' ));
+		*/
         add_action( 'wp_insert_post', array( &$this, 'wp_insert_post' ), 10, 2 );
 
 		add_filter( 'manage_posts_custom_column', array( &$this, 'site_custom_columns' ));
@@ -81,16 +83,20 @@ class TypeSites {
         }
     }
 
+	/**
+	 * Causes all pages to show a 404 page so commented out for now
+	
 	// Template redirect for custom templates
     public function template_redirect() {
         global $wp_query;
         if ( $wp_query->query_vars['post_type'] == 'site' ) {
-            include( TEMPLATEPATH . '/single-site.php' ); // a custom single-slug.php template
+            get_template_part( 'single-site' ); // a custom single-slug.php template
             die();
         } else {
 			$wp_query->is_404 = true;
 		}
     }
+	*/
 
 	// For inserting new 'site' post type posts
     public function wp_insert_post($post_id, $post = null) {
@@ -115,14 +121,15 @@ class TypeSites {
 
 	// Add meta box
 	function admin_init() {
-        add_meta_box( 'sites-meta', 'Site Url (required)', array( &$this, 'meta_options' ), 'site', 'side', 'low' );
+        add_meta_box( 'sites-meta', 'Site Url (required)', array( &$this, 'meta_options' ), 'site', 'side', 'high' );
     }
 
 	// Admin post meta contents
 	public function meta_options() {
-		global $post, $url;
+		global $post, $siteurl;
 		$custom = get_post_custom($post->ID);
-		$url = $custom["siteurl"][0];
+		$siteurl = get_post_custom($post->ID, 'siteurl', true );
+		
 		$myurl = trailingslashit( get_post_meta( $post->ID, 'siteurl', true ) );
 		if ( $myurl != '' ) {
 			// Check if url has http:// or not so works either way
@@ -133,17 +140,18 @@ class TypeSites {
 				$siteurl = 'http://' . get_post_meta( $post->ID, 'siteurl', true );
 				$mshoturl = 'http://s.WordPress.com/mshots/v1/' . urlencode('http://'.$myurl);
 			}
-			$imgsrc  = '<img src="' . $mshoturl . '?w=250" alt="' . $title . '" title="' . $title . '" width="250" />';
+			$imgsrc  = '<img src="' . $mshoturl . '?w=250" width="250" />';
 		} ?>
 
-		<p><label>Clean Url: <input id="siteurl" size="26" name="siteurl" value="<?php echo $url; ?>" /></label></p>
+		<p><label>Enter a valid Url below:<br />
+		<input id="siteurl" size="26" name="siteurl" value="<?php echo $siteurl; ?>" /></label></p>
 		<p><?php echo '<a href="' . $siteurl . '">' . $imgsrc . '</a>'; ?></p>
 
 	<?php
 	} // end meta options
 
     public function mshot($mshotsize) {
-        global $post, $url;
+        global $post;
         $imgWidth = $mshotsize;
         $myurl = get_post_meta($post->ID, 'siteurl', true);
 		if ( $myurl != '' ) {

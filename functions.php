@@ -25,21 +25,21 @@ require_once ( $functionsdir . '/more_functions.php' );
 /* * * * * * * * * Actions and Filters For Theme * * * * * * * * * * * * * */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-add_action( 'init', 'register_navmenus' );
-add_action( 'admin_head', 'admin_register_head' );
-add_action( 'get_header', 'redirect_to_first_child', 2 );
+add_action( 'init', 'bb_register_navmenus' );
+add_action( 'admin_head', 'bb_admin_register_head' );
+add_action( 'get_header', 'bb_redirect_to_first_child', 2 );
 
-add_filter( 'admin_body_class', 'base_admin_body_class' );
+add_filter( 'admin_body_class', 'bb_base_admin_body_class' );
 add_filter( 'admin_footer_text', 'custom_admin_footer' );
 
-add_filter( 'wp_list_pages','base_better_lists' );
-add_filter( 'wp_list_categories','base_better_lists' );
+add_filter( 'wp_list_pages', 'bb_base_better_lists' );
+add_filter( 'wp_list_categories', 'bb_base_better_lists' );
 add_filter( 'get_the_excerpt', 'trim_excerpt' );			// remove [...] from excerpts
 add_filter( 'the_generator', 'complete_version_removal' ); 	// remove WP version generated in 
 add_filter( 'wp_footer', 'my_js' );
 
 add_theme_support( 'menus' );
-add_theme_support( 'post-thumbnails', array( 'post', 'page', 'site' )); // 
+add_theme_support( 'post-thumbnails', array( 'post', 'page' )); // 
 add_theme_support( 'automatic-feed-links' ); // support for adding RSS feed links
 
 add_custom_background(); // custom backgrounds support
@@ -61,7 +61,7 @@ add_custom_background(); // custom backgrounds support
  *
  * Function for registering wp_nav_menu() in 3 locations
  */
-function register_navmenus() {
+function bb_register_navmenus() {
 	register_nav_menus( array(
 		'Top' 		=> __( 'Top Navigation' ),
 		'Header'	=> __( 'Header Navigation' ),
@@ -111,7 +111,7 @@ wp_delete_nav_menu( $menu );
  *
  * Add 'first' and 'last' classes to ends of wp_list_pages and wp_list_categories
  */
-function base_better_lists($content) {
+function bb_base_better_lists($content) {
 	$pattern = '/<li class="/is';
 	$content = preg_replace($pattern, '<li class="first ', $content, 1);
 	$pattern = '/<li class="(?!.*<li class=")/is';
@@ -123,7 +123,7 @@ function base_better_lists($content) {
  *
  */
 // Redirect parent pages to first child
-function redirect_to_first_child(){
+function bb_redirect_to_first_child(){
 	global $post; 
 	# UNCOMMENT THE LINE BELOW TO DISABLE FOR CHILD PAGES (ie not to level pages)
 	//if($post->post_parent != 0) return;
@@ -157,9 +157,9 @@ if (!is_admin()) {
 }
 */
 function my_js() {
-	wp_enqueue_script( 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js','','',true );
-	wp_enqueue_script( 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js','','',true );
-	wp_enqueue_script( get_bloginfo("template_directory") . '/js/global.js','','',true );
+	wp_enqueue_script( 'jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js','','',true );
+	wp_enqueue_script( 'jquery-ui-core', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js','','',true );
+	wp_enqueue_script( 'my_script', get_bloginfo("template_directory") . '/js/global.js','','',true );
 }
 
 /**
@@ -170,7 +170,7 @@ function my_js() {
 	jQuery Thickbox	-	thickbox
 	jQuery Tools 	-	jqtools
  */
-function bb_scriptSettings () {
+function bb_scripts () {
 	$scripts = array();
 	if (!is_admin()) {
 		wp_deregister_script( 'jquery' );
@@ -219,16 +219,15 @@ function bb_loadScripts () {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 // Remove dashboard widgets
-add_action( 'admin_menu', 'remove_dashboard_boxes' );
-function remove_dashboard_boxes() {
-        // remove_meta_box( 'dashboard_right_now', 'dashboard', 'core' ); // Right Now Overview 
-        // remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'core' ); // Incoming Links
-        remove_meta_box( 'dashboard_quick_press', 'dashboard', 'core' ); // Quick Press Box
-        remove_meta_box( 'dashboard_plugins', 'dashboard', 'core' ); // Plugins Box
-        remove_meta_box( 'dashboard_recent_drafts', 'dashboard', 'core' ); // Recent Drafts Box
-        remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'core' ); // Recent Comments
-        remove_meta_box( 'dashboard_primary', 'dashboard', 'core' ); // WordPress Development 
-        remove_meta_box( 'dashboard_secondary', 'dashboard', 'core' ); // Other WordPress News
+function bb_remove_dashboard_boxes() {
+	// remove_meta_box( 'dashboard_right_now', 'dashboard', 'core' ); // Right Now Overview 
+	// remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'core' ); // Incoming Links
+	remove_meta_box( 'dashboard_quick_press', 'dashboard', 'core' ); // Quick Press Box
+	remove_meta_box( 'dashboard_plugins', 'dashboard', 'core' ); // Plugins Box
+	remove_meta_box( 'dashboard_recent_drafts', 'dashboard', 'core' ); // Recent Drafts Box
+	remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'core' ); // Recent Comments
+	remove_meta_box( 'dashboard_primary', 'dashboard', 'core' ); // WordPress Development 
+	remove_meta_box( 'dashboard_secondary', 'dashboard', 'core' ); // Other WordPress News
 }
 
 
@@ -268,7 +267,7 @@ function bb_404Response() {
 
 /**
  */
-function postthumb() {
+function bb_postthumb() {
 	// if post has a thumbnail
 	if ( has_post_thumbnail() ) {
 		the_post_thumbnail( 'thumbnail' );
@@ -331,7 +330,7 @@ if ( !function_exists('fb_AddThumbColumn') && function_exists('add_theme_support
  * Get all of the details for the authors on the blog
  * Most useful for multi author blogs
  */
-function bm_listAuthors() {
+function bb_listAuthors() {
 	global $wpdb;
 /*
 	$query = 'SELECT COUNT(1) FROM ' . $wpdb->users;
@@ -373,8 +372,8 @@ function bm_listAuthors() {
 			'posts' => $posts,
 		);			
 	}
-	$ret = apply_filters('bm_listAuthors', $ret);
-	return $ret;	
+	$ret = apply_filters('bb_listAuthors', $ret);
+	return $ret;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -384,7 +383,7 @@ function bm_listAuthors() {
  *
  * Admin classes
  */
-function base_admin_body_class( $classes ) {
+function bb_base_admin_body_class( $classes ) {
 	if ( is_admin() && isset($_GET['action']) ) {
 		$classes .= 'action-'.$_GET['action'];
 	}
@@ -401,7 +400,7 @@ function base_admin_body_class( $classes ) {
  *
  * Generates semantic classes for BODY element
  */
-function base_body_class( $print = true ) {
+function bb_base_body_class( $print = true ) {
 	global $wp_query, $current_user;
 
 	// It's surely a WordPress blog, right?
@@ -626,7 +625,7 @@ if ( function_exists('register_sidebar') ) {
  *
  * Wordpress 2.7 Legacy Comments
  */
-function base_comment($comment, $args, $depth) {
+function bb_base_comment($comment, $args, $depth) {
 	 $GLOBALS['comment'] = $comment; ?>
 	 <li <?php comment_class(); ?> id="li-comment-<?php comment_ID() ?>">
 		<div id="comment-<?php comment_ID(); ?>">
@@ -656,7 +655,7 @@ function base_comment($comment, $args, $depth) {
  *
  * Add is_child() comment Conditional
  */
-function is_child($parent) {
+function bb_is_child($parent) {
 	global $wp_query;
 	if ($wp_query->post->post_parent == $parent) {
 		$return = true;
