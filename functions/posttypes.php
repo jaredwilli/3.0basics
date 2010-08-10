@@ -11,7 +11,8 @@ function pTypesInit() {
 class TypeSites {
 
 	// Store the data
-	public $meta_fields = array( 'title', 'description', 'siteurl', 'category', 'post_tags' );
+	public $meta_fields = array( 'title', 'description', 'site', 'siteurl', 'category', 'post_tags' );
+	
 
 	// The post type constructor
 	public function TypeSites() {
@@ -35,20 +36,20 @@ class TypeSites {
 			'hierarchical' => false,
 			'query_var' => 'site',
 			'capability_type' => 'post',
-			'rewrite' => array('slug' => 'site'), // Permalinks. Fixes a 404 bug
-			'menu_icon'  => get_bloginfo('template_directory').'/images/sites-icon.png',
-			'taxonomies' =>  array('category', 'post_tag'), // Add tags and categories taxonomies
-			'supports' => array('title','editor','author','comments')
+			'rewrite' => array( 'slug' => 'site' ), // Permalinks. Fixes a 404 bug
+			'menu_icon'  => get_bloginfo( 'template_directory' ).'/images/sites-icon.png',
+			'taxonomies' =>  array( 'category', 'post_tag' ), // Add tags and categories taxonomies
+			'supports' => array( 'title','editor','author','comments' )
         );
         register_post_type( 'site', $siteArgs );	
 
 	// Initialize the methods
-        add_action( 'admin_init', array(&$this, 'admin_init') );
-        add_action( 'template_redirect', array(&$this, 'template_redirect') );
-        add_action( 'wp_insert_post', array(&$this, 'wp_insert_post'), 10, 2 );
+        add_action( 'admin_init', array( &$this, 'admin_init' ));
+        add_action( 'template_redirect', array( &$this, 'template_redirect' ));
+        add_action( 'wp_insert_post', array( &$this, 'wp_insert_post' ), 10, 2 );
 
-		add_action( 'manage_posts_columns', array ( &$this, 'site_edit_columns' ));
 		add_filter( 'manage_posts_custom_column', array( &$this, 'site_custom_columns' ));
+		add_action( 'manage_edit-site_columns', array( &$this, 'site_edit_columns' ));
 	}
 
 	// Create the columns and heading title text
@@ -82,9 +83,9 @@ class TypeSites {
 
 	// Template redirect for custom templates
     public function template_redirect() {
-        global $wp;
-        if ( $wp->query_vars["post_type"] == "site" ) {
-            include( TEMPLATEPATH . "/single-site.php" ); // a custom single-slug.php template
+        global $wp_query;
+        if ( $wp_query->query_vars['post_type'] == 'site' ) {
+            include( TEMPLATEPATH . '/single-site.php' ); // a custom single-slug.php template
             die();
         } else {
 			$wp_query->is_404 = true;
@@ -93,7 +94,7 @@ class TypeSites {
 
 	// For inserting new 'site' post type posts
     public function wp_insert_post($post_id, $post = null) {
-        if ($post->post_type == "site") {
+        if ($post->post_type == 'site') {
             foreach ($this->meta_fields as $key) {
                 $value = @$_POST[$key];
                 if (empty($value)) {
@@ -148,6 +149,7 @@ class TypeSites {
 		if ( $myurl != '' ) {
 /* /^ ((http(s)?)+:\/\/)?(www\d?.)?|([a-zA-Z0-9\.\-_])\.+)?([a-zA-Z0-9]+\-?)+(\.\w[2,6])+(\/?([a-zA-Z0-9]+?[\\\/\-\.\?&#%=_]+?\/))?$/
 */
+			$mshoturl = '';
 			if ( preg_match( "/http(s?):\/\//", $myurl )) {
 				$siteurl = get_post_meta( $post->ID, 'siteurl', true );
 				$mshoturl = 'http://s.wordpress.com/mshots/v1/' . urlencode( $myurl );
