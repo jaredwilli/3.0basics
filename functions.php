@@ -1,4 +1,13 @@
 <?php
+/*
+/ menubar CSS is totally messed up
+=> Menubars are not accepting made-menu
+
+=> scripts need to be enqueued (my_js())
+/ should use wordpress jquery enqueued otherwise enqueue the remote
+/ functions should have a unique identifier prefix'ing them, specific to the theme example: basics_postthumb();
+*/
+
 define( 'N2_INC_PATH', get_template_directory() . '/inc' );
 define( 'N2_INC_URL', get_bloginfo('template_directory') . '/inc' );
 define( 'N2_FUNC_PATH', get_template_directory() . '/func' ); 
@@ -11,15 +20,14 @@ $functionsdir 	= TEMPLATEPATH . '/functions';
 $jsdir 			= TEMPLATEPATH . '/js';
 
 // Include your posttypes.php file
-require_once ( $functionsdir . '/posttypes.php' );
-require_once ( $functionsdir . '/more_functions.php' );
+get_template_part( 'functions/posttypes' );
+get_template_part( 'functions/more_functions' );
 
-/**
- * Widgets not yet working properly
- *
- * require_once ( $functionsdir . '/widgetclasses.php' );
- * require_once ( $functionsdir . '/widgets.php' );
- */
+/** 
+ ** Widgets not yet working properly **
+get_template_part( 'functions/widgetclasses' );
+get_template_part( 'functions/widgets' ); 
+*/
 
 /* * * * * * * * * Actions and Filters For Theme * * * * * * * * * * * * * */
 add_action( 'init', 'bb_register_navmenus' );
@@ -27,20 +35,24 @@ add_action( 'admin_head', 'bb_admin_register_head' );
 add_action( 'get_header', 'bb_redirect_to_first_child', 2 );
 add_action( 'admin_menu', 'bb_remove_dashboard_boxes' );
 
+add_action( 'right_now_content_table_end', 'bb_right_now_content_table_end' );
+add_action( 'manage_users_columns', 'bb_manage_users_columns' );
+add_action( 'manage_users_custom_column', 'bb_manage_users_custom_column', 10, 3 );
+
 add_filter( 'admin_body_class', 'bb_base_admin_body_class' );
-add_filter( 'admin_footer_text', 'custom_admin_footer' );
+add_filter( 'admin_footer_text', 'bb_custom_admin_footer' );
 
 add_filter( 'wp_list_pages', 'bb_base_better_lists' );
 add_filter( 'wp_list_categories', 'bb_base_better_lists' );
-add_filter( 'get_the_excerpt', 'trim_excerpt' );			// remove [...] from excerpts
-add_filter( 'the_generator', 'complete_version_removal' ); 	// remove WP version generated in 
-add_action( 'wp_footer', 'my_init_method' );
+add_filter( 'get_the_excerpt', 'trim_excerpt' );
+add_filter( 'the_generator', 'complete_version_removal' );
+add_action( 'wp_footer', 'bb_init_method' );
 
+// Add 3.0 Supports
 add_theme_support( 'menus' );
-add_theme_support( 'post-thumbnails', array( 'post', 'page' )); // 
-add_theme_support( 'automatic-feed-links' ); // support for adding RSS feed links
-
-add_custom_background(); // custom backgrounds support
+add_theme_support( 'post-thumbnails', array( 'post', 'page' ));
+add_theme_support( 'automatic-feed-links' );
+add_custom_background();
 
 // add_custom_image_header(); // custom image in header
 // custom header stuff
@@ -155,8 +167,8 @@ if (!is_admin()) {
 }
 */
 
-function my_init_method() {
-	echo '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>';
+function bb_init_method() {
+	echo '<script src="http://code.jquery.com/jquery-1.4.4.min.js"></script>';
 	echo '<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>';
 	echo '<script src="'. get_bloginfo("template_directory") .'/js/global.js"></script>';
 }
@@ -179,7 +191,7 @@ function bb_scripts () {
 		$scripts = array ( 
 			'jquery' => array(
 				'jquery', 
-				'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js',
+				'http://code.jquery.com/jquery-1.4.4.min.js',
 			),
 			'jquery-ui-core' => array(
 				'jquery-ui-core', 
@@ -222,10 +234,10 @@ function bb_loadScripts () {
 function bb_remove_dashboard_boxes() {
 	// remove_meta_box( 'dashboard_right_now', 'dashboard', 'core' ); // Right Now Overview 
 	// remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'core' ); // Incoming Links
+	// remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'core' ); // Recent Comments
 	remove_meta_box( 'dashboard_quick_press', 'dashboard', 'core' ); // Quick Press Box
 	remove_meta_box( 'dashboard_plugins', 'dashboard', 'core' ); // Plugins Box
 	remove_meta_box( 'dashboard_recent_drafts', 'dashboard', 'core' ); // Recent Drafts Box
-	remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'core' ); // Recent Comments
 	remove_meta_box( 'dashboard_primary', 'dashboard', 'core' ); // WordPress Development 
 	remove_meta_box( 'dashboard_secondary', 'dashboard', 'core' ); // Other WordPress News
 }
@@ -488,14 +500,14 @@ function bb_base_body_class( $print = true ) {
 		$tags = $wp_query->get_queried_object();
 		$c[] = 'tag'; $c[] = 'tag-' . $tags->slug;
 	}
-
+	/*
 	if ( is_tax()) {
 		$taxonomy = get_taxonomy( get_query_var( 'taxonomy' )); 
 		$tax = $wp_query->get_queried_object(); 
 		$taxtitle = $tax->name; 
 		$c[] = 'tax'; $c[] = 'tax-' . $tax->slug;
 	}
-
+	*/
 	elseif ( is_page() ) {
 	
 		$pageID = $wp_query->post->ID;
@@ -591,8 +603,9 @@ function bb_base_body_class( $print = true ) {
 
 
 /**
+ *
+ * Generates time- and date-based classes for BODY, post DIVs, and comment LIs; relative to GMT (UTC)
  */
-// Generates time- and date-based classes for BODY, post DIVs, and comment LIs; relative to GMT (UTC)
 function thematic_date_classes( $t, &$c, $p = '' ) {
 	$t = $t + ( get_option('gmt_offset') * 3600 );
 	$c[] = $p . 'y' . gmdate( 'Y', $t ); // Year
@@ -602,18 +615,26 @@ function thematic_date_classes( $t, &$c, $p = '' ) {
 }
 
 /**
+ *
  * Multiple Sidebars
  */
 if ( function_exists('register_sidebar') ) {
 	register_sidebar(array(
-		'name'=>'Blog',
+		'name'=>'Blog Sidebar',
 		'before_widget' => '<li id="%1$s" class="%2$s">',
 		'after_widget' => '</li>',
 		'before_title' => '<h2>',
 		'after_title' => '</h2>'
 	));
 	register_sidebar(array(
-		'name'=>'Page',
+		'name'=>'Sites Sidebar',
+		'before_widget' => '<li id="%1$s" class="%2$s">',
+		'after_widget' => '</li>',
+		'before_title' => '<h2>',
+		'after_title' => '</h2>'
+	));
+	register_sidebar(array(
+		'name'=>'Pages Sidebar',
 		'before_widget' => '<li id="%1$s" class="callout">',
 		'after_widget' => '</li>',
 		'before_title' => '<h2>',
@@ -664,6 +685,107 @@ function bb_is_child($parent) {
 		$return = false;
 	}
 	return $return;
+}
+
+
+/**
+ *
+ * Add custom post types to Right Now dashboard widget 
+ */
+function bb_right_now_content_table_end() {
+	$args = array(
+		'public' => true ,
+		'_builtin' => false
+	);
+	$output = 'object';
+	$operator = 'and';
+	$post_types = get_post_types( $args , $output , $operator );
+	
+	foreach( $post_types as $post_type ) {
+		$num_posts = wp_count_posts( $post_type->name );
+		$num = number_format_i18n( $num_posts->publish );
+		$text = _n( $post_type->labels->singular_name, $post_type->labels->name , intval( $num_posts->publish ) );
+		if ( current_user_can( 'edit_posts' ) ) {
+			$num = "<a href='edit.php?post_type=$post_type->name'>$num</a>";
+			$text = "<a href='edit.php?post_type=$post_type->name'>$text</a>";
+		}
+		echo '<tr><td class="first b b-' . $post_type->name . '">' . $num . '</td>';
+		echo '<td class="t ' . $post_type->name . '">' . $text . '</td></tr>';
+	}	
+	$taxonomies = get_taxonomies( $args , $output , $operator );
+	
+	foreach( $taxonomies as $taxonomy ) {
+		$num_terms  = wp_count_terms( $taxonomy->name );
+		$num = number_format_i18n( $num_terms );
+		$text = _n( $taxonomy->labels->singular_name, $taxonomy->labels->name , intval( $num_terms ) );
+		if ( current_user_can( 'manage_categories' ) ) {
+			$num = "<a href='edit-tags.php?taxonomy=$taxonomy->name'>$num</a>";
+			$text = "<a href='edit-tags.php?taxonomy=$taxonomy->name'>$text</a>";
+		}
+		echo '<tr><td class="first b b-' . $taxonomy->name . '">' . $num . '</td>';
+		echo '<td class="t ' . $taxonomy->name . '">' . $text . '</td></tr>';
+	}
+}
+
+
+/**
+ *
+ * Add custom post type counts to the user list panel
+ */
+function bb_manage_users_columns($column_headers) {
+	unset($column_headers['posts']);
+	$column_headers['custom_posts'] = 'Assets';
+	return $column_headers;
+}
+function bb_manage_users_custom_column($custom_column, $column_name, $user_id) {
+	if ($column_name == 'custom_posts') {
+		$counts = _bb_get_author_post_type_counts();
+		$custom_column = array();
+
+		if (isset($counts[$user_id]) && is_array($counts[$user_id]))
+			foreach($counts[$user_id] as $count) {
+				$link = admin_url() . "edit.php/?post_type=" . $count['type'] . "&author=" . $user_id;
+				$custom_column[] = "\t<tr><td>{$count['label']}</td><td><a href={$link}>{$count['count']}</</td></tr>";
+		}
+		$custom_column = implode("\n",$custom_column);
+
+		if (empty($custom_column))
+			$custom_column = "<td>0</td>";
+		$custom_column = "<table>\n{$custom_column}\n</table>";
+	}
+	return $custom_column;
+}
+function _bb_get_author_post_type_counts() {
+	static $counts;
+	if (!isset($counts)) {
+		global $wpdb, $wp_post_types;
+		$sql = <<<SQL
+		SELECT post_type, post_author, COUNT(*) AS post_count
+		FROM {$wpdb->posts} WHERE 1 = 1
+		AND post_type NOT IN ('revision', 'nav_menu_item')
+		AND post_status IN ('publish', 'pending', 'draft')
+		GROUP BY post_type, post_author
+SQL;
+		$posts = $wpdb->get_results($sql);
+		foreach($posts as $post) {
+			$post_type_object = $wp_post_types[$post_type = $post->post_type];
+			if (!empty($post_type_object->label))
+				$label = $post_type_object->label;
+			else if (!empty($post_type_object->labels->name))
+				$label = $post_type_object->labels->name;
+			else
+				$label = ucfirst(str_replace(array('-','_'),' ',$post_type));
+
+			if (!isset($counts[$post_author = $post->post_author]))
+			$counts[$post_author] = array();
+			$counts[$post_author][] = array(
+				'label' => $label,
+				'count' => $post->post_count,
+				'type' => $post->post_type,
+			);
+		}
+	}
+	return $counts;
 }
 
 ?>

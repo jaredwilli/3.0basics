@@ -1,4 +1,6 @@
 <?php get_header(); ?>
+<?php get_template_part( 'branding' ); ?>
+
 <div id="content" class="inner clearfix">
 	<div id="content-main" role="main">
 
@@ -42,7 +44,7 @@
 	</div><!--// end #post-<?php the_ID(); ?> -->
 
 	<?php endwhile; ?>
-	
+
 		<?php if( function_exists( 'wp_pagenavi' )) { wp_pagenavi(); } else { ?>
 		<div class="navigation clearfix">
 			<div class="alignleft"><?php next_posts_link('&laquo; Previous Entries'); ?></div>
@@ -50,7 +52,7 @@
 		</div>
 		<?php } ?>
 
-	<?php else :
+	<?php else : 
 		// Show 404 message
 		if (function_exists('bb_404')) { bb_404(); }
 	endif; ?>

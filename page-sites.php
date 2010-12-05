@@ -4,12 +4,15 @@
 <div id="content" class="inner clearfix">
 	<div id="content-main">
 
+
 <?php // get_template_part( 'loop', 'sites' ); ?>
 
 		<?php
-		$q = new WP_query();
-		$q->query( 'post_type=site' );
-		if ($q->have_posts()) : while ($q->have_posts()) : $q->the_post();
+		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+		query_posts( array( 'post_type' => 'site', 'posts_per_page' => 5, 'caller_get_posts' => 1, 'paged' => $paged ) );
+		if (have_posts()) : ?>
+	
+		<?php while (have_posts()) : the_post();
 			$s = new TypeSites();
 			$a = $s->mshot(250);
 		?>

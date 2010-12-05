@@ -15,7 +15,7 @@ function all_settings_link() {
 /**
  * customize default gravatars
  */
-function custom_gravatars($avatar_defaults) {
+function bb_custom_gravatars($avatar_defaults) {
 
 	// change the default gravatar
 	$customGravatar1 = get_bloginfo('template_directory').'/images/default-avatar.png';
@@ -64,7 +64,7 @@ function bb_admin_register_head() {
 
 /**
  */
-function custom_admin_footer() {
+function bb_custom_admin_footer() {
 	echo '<a href="http://new2wp.com">Theme created by New2WP</a>';
 } 
 
@@ -81,7 +81,7 @@ function complete_version_removal() { return ''; }
 /**
  * List the terms for Categories taxonomy
  */
-function category_terms_list() {
+function bb_category_terms_list() {
 	// uses wp_list_categories with Categories taxonomy parameter
 	wp_list_categories( array( 
 		'style' => 'list', 
@@ -97,7 +97,7 @@ function category_terms_list() {
 /**
  * List the terms for Tags taxonomy
  */
-function tags_terms_list() {
+function bb_tags_terms_list() {
 	// uses wp_list_categories with Tags taxonomy parameter
 	wp_list_categories( array( 
 		'style' => 'list', 
@@ -113,7 +113,7 @@ function tags_terms_list() {
 /**
  * Get user avatar
  */
-function member_get_avatar( $wpcom_user_id, $email, $size, $rating = '', $default = 'http://s.wordpress.com/i/mu.gif' ) {
+function bb_member_get_avatar( $wpcom_user_id, $email, $size, $rating = '', $default = 'http://s.wordpress.com/i/mu.gif' ) {
 	if( !empty( $wpcom_user_id ) && $wpcom_user_id !== false && function_exists( 'get_avatar' ) ) {
 		return get_avatar( $wpcom_user_id, $size );
 	}
